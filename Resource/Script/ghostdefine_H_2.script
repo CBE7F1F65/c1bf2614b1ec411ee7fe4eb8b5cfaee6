@@ -1,0 +1,470 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+EDEFFILE
+
+///////////////
+# 0xA200	//Ðý×ªÐ¡±øÎ²±øÐü¹Ò0
+
+@ @@% 18
+
+B GHX GHY
+	false 0 2.2
+	8 1 8 8 0xff
+
+///////////////
+# 0xA201	//Ðý×ªÐ¡±øÎ²±øÐü¹Ò1
+
+@ @@% 18
+
+B GHX GHY
+	false 0 2.0
+	8 0 8 8 0xff
+
+@ @@% 60
+
+BC 8 false
+	GHX GHY 1.8
+	9 0 8 8
+
+///////////////
+# 0xA202	//ÂýËÙÉ¢Éä0
+
+@ @@%]% 80 16 2
+
+B GHX GHY
+	false 0 1.5
+	3 1 8 8 0xff
+
+///////////////
+# 0xA203	//ÂýËÙÉ¢Éä1
+
+@ @@%] 60 16
+
+B GHX GHY
+	false 0 1.5
+	3 6 8 0 0xff
+
+//////////////////
+# 0xA208	//Ö÷¹¥Ê¹Ä§0
+
+@ @@%[% 90 40 8
+
+A 25
+	TIMEREQUAL 60 SPEEDSET 0
+	TIMEREQUAL 60 COLORSET 1
+	TIMEREQUAL 60 TYPESET 8
+	TIMERGREAT 60 YSETACCADD 60 2
+	TIMERGREAT 60 XSETACCADD 60 RAND % 3 - 1
+	TIMERGREAT 60 ANGLEADJUST
+
+B GHX GHY
+	true GH@ / 10 % 3 - 1 * 1500 - 9000 2.0
+	37 7 16 8 0xff
+A 0
+
+//////////////////
+# 0xA209	//Ö÷¹¥Ê¹Ä§1
+
+@ @@%[% 90 30 6
+
+A 25
+	TIMEREQUAL 60 SPEEDSET 0
+	TIMEREQUAL 60 COLORSET 0
+	TIMEREQUAL 60 TYPESET 8
+	TIMERGREAT 60 YSETACCADD 60 2
+	TIMERGREAT 60 XSETACCADD 60 RAND % 3 - 1
+	TIMERGREAT 60 ANGLEADJUST
+
+B GHX GHY
+	true GH@ / 8 % 3 - 1 * 1500 - 9000 2.0
+	37 7 16 8 0xff
+A 0
+
+/////////////////
+# 0xA212	//·½¿éÊ¹Ä§0
+
+@ @@>% 30 8
+
+B GHX GHY
+	true GHANGLE 1.5
+	8 1 8 8 0xff
+
+/////////////////
+# 0xA213	//·½¿éÊ¹Ä§1
+
+@ @@>% 30 4
+
+B GHX GHY
+	true GHANGLE + 18000 2.0
+	8 0 8 8 0xff
+
+////////////////
+# 0xA214	//BX°×Ñª1Ê¹Ä§0
+
+@ @@>% 30 10
+
+B GHX GHY
+	true GH@ * 100 + GHANGLE 1.0
+	2 7 8 0 0xff
+
+///////////////
+# 0xA215	//BX°×Ñª1Ê¹Ä§1
+
+@ @@>% 30 45
+
+SD [i] 8
+LOOP [i]
+{
+	B GHX GHY
+		true i * 4500 + GHANGLE 1.0
+		2 5 8 0 0xff
+}
+
+//////////////
+# 0xA216	//BA°×Ñª1Ê¹Ä§0
+
+@ @@%= 120 90
+
+A 8
+	TIMERLESS 60 CHASE 40 45
+	TIMEREQUAL 60 FADEOUT
+B GHX GHY
+	true 0 0.0
+	40 0 8 0 0xff
+A 0
+
+/////////////
+# 0xA217	//BA°×Ñª1Ê¹Ä§1
+
+@ @@> 0
+
+EXECUTE CT_EDEF 0x8216 GH@
+
+@ @@%= 120 90
+
+SD [angleBase] GHAMAP -1500
+SD [i] 3
+LOOP [i]
+{
+	B GHX GHY
+		true i * 1500 + angleBase 2.0
+		32 1 16 0 0xff
+}
+
+////////////
+# 0xA218	//BARANGE°×»¢ÌÃÉÈÁÁµ¶ÕóBAÊ¹Ä§0
+
+@ @@[%[]% 120 540 30 210 12
+
+SD [i] 6
+SDf [pieceX] TX 40 -f GHX /f 6.0
+SDf [pieceY] TY 40 -f GHY /f 6.0
+A 9
+	TIMERLESS 60 ANGLESETAMAP 0
+	TIMERRANGE 60 90 SPEEDSETADD 10
+LOOP [i]
+{
+	B i *f pieceX +f GHX i *f pieceY +f GHY
+		true 9000 0.0
+		33 0 8 0 0xff
+}
+A 0
+
+@ @@[%[]% 120 540 300 480 12
+
+SD [i] 6
+SDf [pieceX] TX 40 -f GHX /f 6.0
+SDf [pieceY] TY 40 -f GHY /f 6.0
+SD [sign] GH@ % 24 / 6 - 1
+A 29
+	TIMERLESS 60 ANGLESETAMAP 0
+	TIMERRANGE 60 90 SPEEDSETADD 3
+	VALEQUAL [_2] 1 SPEEDSET 0
+	VALEQUAL [_2] 1 COLORSET 7
+	VALEQUAL [_2] 2 ANGLESETADD GH@ % 270 * sign * 30
+	VALEQUAL [_2] 2 SPEEDSET 150
+LOOP [i]
+{
+	B i *f pieceX +f GHX i *f pieceY +f GHY
+		true 9000 0.0
+		33 0 8 0 0xff
+}
+A 0
+
+////////////////////
+# 0xA219	//BARANGE°×»¢ÌÃÉÈÁÁµ¶ÕóBAÊ¹Ä§1
+
+@ @@> 0
+
+EXECUTE CT_EDEF 0xA218 GH@
+
+@ @@% 80
+
+BC 12 true
+	GHX GHY 1.2
+	9 1 8 8
+
+//////////////////
+# 0xA220	//BX°×Ñª2BXÊ¹Ä§0
+
+@ @@% 25
+
+A 4
+	TIMERLESS 40 SPEEDSETADD -8
+BC 20 false
+	GHX GHY 3.5
+	9 7 8 8
+A 0
+
+//////////////////
+# 0xA221	//BX°×Ñª2BXÊ¹Ä§1
+
+@ @@% 25
+
+A 16
+	TIMERLESS 40 SPEEDSETADD -8
+	TIMEREQUAL 80 TYPESET 3
+	TIMEREQUAL 80 COLORSET 0
+	TIMEREQUAL 80 SPEEDSET 300
+BC 20 false
+	GHX GHY 3.5
+	9 7 8 8
+A 0
+
+//////////////////
+# 0xA222	//BX°×Ñª2BAÊ¹Ä§0
+
+@ @@% 25
+
+A 4
+	TIMERLESS 40 SPEEDSETADD 8
+BC 24 false
+	GHX GHY 0.0
+	3 0 8 8
+A 0
+
+//////////////////
+# 0xA223	//BX°×Ñª2BAÊ¹Ä§1
+
+@ @@% 25
+
+A 16
+	TIMERLESS 40 SPEEDSETADD 8
+	TIMEREQUAL 60 TYPESET 9
+	TIMEREQUAL 60 COLORSET 7
+	TIMEREQUAL 60 SPEEDSET 110
+BC 24 false
+	GHX GHY 1.1
+	3 0 8 8
+A 0
+
+//////////////////
+# 0xA224	//BXRANGE³ÁÓãÂäÑãÊ¹Ä§0
+
+@ @@% 240
+
+BC 8 true
+	GHX GHY 1.5
+	9 1 8 0
+
+@ @@% 130
+
+IF GHAIMX
+{
+	A 8
+		TIMEREQUAL 80 SPEEDSET 120
+		TIMEREQUAL 80 COLORSET 7
+}
+ELSE
+{
+	A 12
+		TIMEREQUAL 80 SPEEDSET 120
+		TIMEREQUAL 80 COLORSET 0
+		TIMEREQUAL 81 ANGLESETAMAP 0
+}
+B GHX GHY
+	true 9000 1.5
+	2 2 8 0 D 0xff
+A 0
+
+@ @@>%] 130 130 7
+
+SD [yOriOff] GH@ % 130 * -8
+SDf [squre] yOriOff * yOriOff * -1 +f 4096.0
+IF yOriOff > -24
+{
+	SD [appendX] yOriOff * 1.5f
+}
+ELSE
+{
+	SD [appendX] -10
+}
+SD [xOriOff] SQRT squre * -1 + 64 + appendX
+SD [i] 2
+LOOP [i]
+{
+	A 16
+		TIMEREQUAL 80 SPEEDSET 120
+		TIMEREQUAL 80 COLORSET GHAIMX * 7
+		TIMEREQUAL GHAIMX * 4096 + 81 ANGLESETRMAP xOriOff * -1
+		TIMEREQUAL 81 SPEEDSETADD yOriOff *f -1.5
+	B xOriOff +f GHX yOriOff +f GHY
+		true 9000 1.5
+		2 2 8 0 0xff
+	A 0
+	SD [xOriOff] xOriOff * -1
+}
+
+//////////////////////////
+# 0xA225	//BXRANGE³ÁÓãÂäÑãÊ¹Ä§1
+
+@ @@% 240
+
+BC 12 true
+	GHX GHY 1.5
+	9 0 8 0
+
+@ @@% 130
+
+IF GHAIMX
+{
+	A 8
+		TIMEREQUAL 80 SPEEDSET 120
+		TIMEREQUAL 80 COLORSET 7
+}
+ELSE
+{
+	A 12
+		TIMEREQUAL 80 SPEEDSET 120
+		TIMEREQUAL 80 COLORSET 0
+		TIMEREQUAL 81 ANGLESETAMAP 0
+}
+B GHX GHY
+	true 9000 1.5
+	2 2 8 0 D 0xff
+A 0
+
+@ @@>%] 130 130 7
+
+SD [yOriOff] GH@ % 130 * -8
+SDf [squre] yOriOff * yOriOff * -1 +f 4096.0
+SD [xOriOff] SQRT squre * -1 + 64
+
+SD [i] 2
+LOOP [i]
+{
+	A 16
+		TIMEREQUAL 80 SPEEDSET 120
+		TIMEREQUAL 80 COLORSET GHAIMX * 7
+		TIMEREQUAL GHAIMX * 4096 + 81 ANGLESETRMAP SIGN i * yOriOff * -1
+		TIMEREQUAL 81 SPEEDSETADD yOriOff * -1
+	B xOriOff +f GHX yOriOff +f GHY
+		true 9000 1.5
+		2 2 8 0 0xff
+	A 0
+	SD [xOriOff] xOriOff * -1
+}
+
+//////////////////
+# 0xA226	//BARANGE²ÝÄ¾½Ô±øÊ¹Ä§0
+
+@ 120
+
+GHSET 0.0 GHANGLE 180
+
+@ @@>% 120 60
+
+SD [index] GHAIMX
+IF GH@ / 60 % 9 - index !
+{
+	SD [i] 8
+	LOOP [i]
+	{
+		SD [indexAim] index + i + 1 % 8
+		BEB GHX GHY
+			9000 0.5 13 i
+			0 true true 120 0xff
+		BEVECTOR BEI
+			GHX GHY TX indexAim *f 2.0 -f GHX TY indexAim *f 2.0 -f GHY
+	}
+	
+	IF GH@ % 120 !
+	{
+		BEB GHX GHY
+			9000 0.8 0 0
+			0 true true 60 0xff
+		BEVECTOR BEI
+			GHX GHY PX *f 2.0 -f GHX PY *f 2.0 -f GHY
+	}
+}
+ELSE
+{
+	SD [i] 9
+	LOOP [i]
+	{
+		B GHX GHY
+			true i - 4 * 2250 + GHANGLE 2.0
+			8 0 8 0 0xff
+	}
+}
+
+//////////////////
+# 0xA227	//BARANGE²ÝÄ¾½Ô±øÊ¹Ä§1
+
+@ 120
+
+GHSET 0.0 GHANGLE 180
+
+@ @@>% 120 60
+
+SD [index] GHAIMX / 2
+IF GH@ / 60 % 9 - index % 3 !
+{
+	SD [i] 8
+	LOOP [i]
+	{
+		SD [indexAim] index + i + 1 % 8
+		BEB GHX GHY
+			9000 0.5 13 i
+			0 true true 120 0xff
+		BEVECTOR BEI
+			GHX GHY TX indexAim *f 2.0 -f GHX TY indexAim *f 2.0 -f GHY
+	}
+	
+	IF GH@ % 120 !
+	{
+		BEB GHX GHY
+			9000 0.8 0 0
+			0 true true 60 0xff
+		BEVECTOR BEI
+			GHX GHY PX *f 2.0 -f GHX PY *f 2.0 -f GHY
+	}
+}
+ELSE
+{
+	SD [i] 9
+	LOOP [i]
+	{
+		B GHX GHY
+			true i - 4 * 2250 + GHANGLE 2.0
+			8 0 8 0 0xff
+	}
+}
+
+/////////////////
+# 0xA228	//BXRANGEÐþÎäÐé±®»Ã½£ÕóBXÊ¹Ä§0
+
+@ @@% 120
+
+A 3
+	TIMEREQUAL 180 FADEOUT
+BC 36 true
+	GHX GHY 0.7
+	10 GH@ / 120 % 8 64 16
+
+/////////////////
+# 0xA229	//BXRANGEÐþÎäÐé±®»Ã½£ÕóBXÊ¹Ä§1
+
+@ @@> 0
+
+EXECUTE CT_EDEF 0xA228 GH@

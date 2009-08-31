@@ -1,0 +1,392 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+EDEFFILE
+
+//////////
+# 0x8400	//ÏÝÚåÊ¹Ä§0
+
+@ @@] 25
+
+A 3
+	TIMEREQUAL 90 FADEOUT
+SD [i] 2
+SD [r] RAND % 20
+SDf [r] GH@ * 3 + r
+LOOP [i]
+{
+	SD [angle] RANDA
+	B COSA angle *f r +f GHX SINA angle *f r +f GHY
+		true angle 0.0
+		9 1 8 0 0xff
+}
+A 0
+
+@ 25
+
+RAMA false
+	GHX GHY PX PY 0 [angle]
+GHSET 1.5 angle GHAC
+
+//////////
+# 0x8401	//ÏÝÚåÊ¹Ä§1
+
+@ @@] 35
+
+A 3
+	TIMEREQUAL 120 FADEOUT
+SD [i] 3
+SD [r] RAND % 15
+SDf [r] GH@ * 3 + r
+LOOP [i]
+{
+	SD [angle] RANDA
+	B COSA angle *f r +f GHX SINA angle *f r +f GHY
+		true angle 0.0
+		9 0 8 0 0xff
+}
+A 0
+
+@ 35
+
+RAMA false
+	GHX GHY PX PY 0 [angle]
+GHSET 1.5 angle GHAC
+
+///////////
+# 0x8402	//À­ÏßÊ¹Ä§0
+
+@ @@]% 40 3
+
+SD [r] RAND % 31 - 15
+A 4
+	TIMEREQUAL 60 SPEEDSET 200
+B r +f GHX 31 - r +f GHY
+	false r 0.0
+	2 1 8 16 0xff
+A 0
+
+///////////
+# 0x8403	//À­ÏßÊ¹Ä§1
+
+@ @@]% 40 2
+
+SD [r] RAND % 31 - 15
+A 4
+	TIMEREQUAL 30 SPEEDSET 150
+B r +f GHX 31 - r +f GHY
+	false r *f -0.8 0.0
+	2 0 8 16 0xff
+A 0
+
+/////////
+# 0x8404	//Ö÷¹¥Ê¹Ä§0
+
+@ @@%[ 80 30
+
+SD [angle] GH@ / 80 * 7200 - 9000
+A 4
+	TIMEREQUAL 60 ANGLESET angle
+B GHX GHY
+	true GH@ * 800 - angle 1.8
+	37 2 8 0 0xff
+A 0
+
+//////////
+# 0x8405	//Ö÷¹¥Ê¹Ä§1
+
+@ @@%> 180 90
+
+SD [filter] SIGN GH@ *f 1.8
+B GHX GHY
+	false GH@ - 80 * 3 * filter 2.0
+	37 0 8 0 0xff
+
+/////////
+# 0x8406	//°×Ñª1Ê¹Ä§0
+
+@ @@%>% 360 180 60
+
+A 4
+	TIMEREQUAL 45 ANGLESETAMAP 0
+BC 15 true
+	GHX GHY 2.0
+	10 1 8 0
+A 0
+
+/////////
+# 0x8407	//°×Ñª1Ê¹Ä§1
+
+@ @@%>% 360 180 60
+
+A 4
+	TIMEREQUAL 35 ANGLESETAMAP 0
+BC 25 true
+	GHX GHY 3.0
+	10 1 8 0
+A 0
+
+/////////
+# 0x8408	//CFRANGEÒ»Ç§ÁãÒ»Ò¹Ê¹Ä§0
+
+@ @@% 60
+
+SD [filter] GH@ / 120 % 2 + 1
+A 4
+	EVERY BOUNCE 20 filter
+SD [i] 3
+SD [angleBase] GHAMAP -19500
+LOOP [i]
+{
+	B GHX GHY
+		true i * 1500 + angleBase 3 - filter
+		9 filter 32 8 0xff
+}
+A 0
+
+@ @@% 360
+
+B GHX GHY
+	false 0 5.0
+	35 1 32 0 0xff
+
+/////////
+# 0x8409	//CFRANGEÒ»Ç§ÁãÒ»Ò¹Ê¹Ä§1
+
+@ @@% 75
+
+SD [filter] GH@ / 120 % 2 + 1
+A 4
+	EVERY BOUNCE 20 filter
+SD [i] 3
+SD [angleBase] GHAMAP -19300
+LOOP [i]
+{
+	B GHX GHY
+		true i * 1300 + angleBase 3 - filter
+		9 filter 32 8 0xff
+}
+A 0
+
+@ @@% 360
+
+A 5
+	TIMERRANGE 120 150 SPEEDSETADD 8
+BC 8 true
+	PX PY 0.8
+	35 0 32 0
+A 0
+
+/////////
+# 0x8410	//»ðÓêÐ¡±øÊ¹Ä§0
+
+@ @@% 60
+
+BC 32 false
+	GHX GHY 1.5
+	8 6 8 8
+
+////////
+# 0x8411	//»ðÓêÐ¡±øÊ¹Ä§1
+
+@ @@% 90
+
+A 5
+	TIMERGREAT 30 YSETACCADD 30 1
+BC 12 true
+	GHX GHY 0.8
+	8 7 8 8
+A 0
+
+//////////
+# 0x8412	//°×Ñª2Ê¹Ä§0
+
+@ @@% 75
+
+SD [i] 8
+SD [type] GH@ / 75 % 2 + 8
+SD [color] GH@ / 75 % 6
+LOOP [i]
+{
+	SD [stopTime] ROLL i 1 * 5 + 30
+	A 12
+		TIMEREQUAL stopTime SPEEDSET 0
+		TIMEREQUAL 120 SPEEDSET 250
+		TIMEREQUAL 120 ANGLESETADD 18000
+	B GHX GHY
+		true i * 4500 + 4500 2.5
+		type color 16 0 0xff
+}
+A 0
+
+//////////
+# 0x8413	//°×Ñª2Ê¹Ä§1
+
+@ @@% 75
+
+SD [i] 12
+SD [type] GH@ / 75 % 2 + 8
+SD [color] GH@ / 75 % 6
+LOOP [i]
+{
+	SD [stopTime] ROLL i 1 * 5 + 30
+	A 12
+		TIMEREQUAL stopTime SPEEDSET 0
+		TIMEREQUAL 120 SPEEDSET 180
+		TIMEREQUAL 120 ANGLESETADD 18000
+	B GHX GHY
+		true i * 3000 + 4500 1.8
+		type color 16 0 0xff
+}
+A 0
+
+////////
+# 0x8414	//CFRANGEË®¾§¹×Ê¹Ä§0
+
+@ 240
+
+GHSET 0.0 GHANGLE GHAC
+
+@ @@% 180
+
+SD [i] 3
+SD [angleBase] GHAMAP -1500
+A 4
+	EVERY BOUNCE 20 1
+LOOP [i]
+{
+	B GHX GHY
+		true i * 1500 + angleBase 1.5
+		9 1 8 0 0xff
+}
+A 0
+
+////////
+# 0x8415	//CFRANGEË®¾§¹×Ê¹Ä§1
+
+@ 240
+
+GHSET 0.0 GHANGLE GHAC
+
+@ @@%[]% 260 60 120 6
+
+SD [i] 5
+SD [angleBase] GHAMAP -3600
+
+A 4
+	YGREAT 460 ANGLESETAMAP 0
+
+LOOP [i]
+{
+	B GHX GHY
+		true i * 1800 + angleBase 1.5
+		9 1 8 0 0xff
+}
+A 0
+
+/////////
+# 0x8416	//CFRANGEÆßÀâ»ÃÕóÈÅÂÒÊ¹Ä§0
+
+@ @@% 20
+
+COLLISION_CIRCLE GHX GHY
+	PX PY 80 [bInRange]
+IF bInRange
+{
+	A 3
+		TIMEREQUAL 40 FADEOUT
+	BC 40 true
+		GHX GHY 2.0
+		9 7 8 0
+	A 0
+}
+
+/////////
+# 0x8417	//CFRANGEÆßÀâ»ÃÕóÈÅÂÒÊ¹Ä§1
+
+@ @@% 20
+
+EXECUTE CT_EDEF 0x8416 GH@
+
+//////////
+# 0x8418	//CFRANGEÆßÀâ»ÃÕóÊ¹Ä§0
+
+@ @@] 120
+
+GHCHASE GHX >f 220.0 * 120 + 160 170 120 - GH@
+
+@ 121
+
+GHSET 0.0 9000 GHAC
+
+//////////
+# 0x8419	//CFRANGEÆßÀâ»ÃÕóÊ¹Ä§1
+
+@ @@] 121
+
+EXECUTE CT_EDEF 0x8418 GH@
+
+@ @@% 220
+
+BC 15 false
+	GHX GHY 1.5
+	9 7 8 0
+
+///////////
+# 0x8420	//CFRANGE°Ù»¨çÔÂÒÊ¹Ä§0
+
+@ @@>%< 360 360 90
+
+SD [pTarIndex] GHAIMX
+SD [timerMod] GH@ % 360
+GHCHASE TX pTarIndex TY pTarIndex 90 - timerMod
+
+@ @@%[]% 360 90 120 15
+
+SD [angle] GH@ % 60 * 120
+SD [type] GH@ % 2 + 9
+SD [color] GH@ / 15 % 4 + 3
+
+SD [i] 20
+LOOP [i]
+{
+	SD [stopTime] ROLL i 2 * 5 + 30
+	A 12
+		TIMEREQUAL stopTime SPEEDSET 0
+		TIMEREQUAL 90 SPEEDSET 80
+		TIMEREQUAL 90 ANGLESETADD 18000
+	B GHX GHY
+		true i * 1800 + angle 1.5
+		type color 16 0 0xff
+}
+A 0
+
+///////////
+# 0x8421	//CFRANGE°Ù»¨çÔÂÒÊ¹Ä§1
+
+@ @@>%< 360 360 90
+
+EXECUTE CT_EDEF 0x8420 GH@
+
+@ @@%[]% 360 90 105 15
+
+SD [angle] GH@ % 60 * 120
+SD [type] GH@ % 2 ! + 34
+SD [color] GH@ / 15 % 2
+
+SD [i] 30
+LOOP [i]
+{
+	SD [stopTime] ROLL i 3 * 5 + 30
+	A 20
+		TIMEREQUAL stopTime SPEEDSET 0
+		TIMEREQUAL 90 SPEEDSET 80
+		TIMEREQUAL 90 ANGLESETADD 18000
+		TIMEREQUAL 180 AND TYPEEQUAL 34 THEN TYPESET 8
+	B GHX GHY
+		true i * 1200 + angle 1.5
+		type 2 - color 16 0 0xff
+}
+A 0
+BC 12 true
+	GHX GHY 0.5
+	8 3 8 0

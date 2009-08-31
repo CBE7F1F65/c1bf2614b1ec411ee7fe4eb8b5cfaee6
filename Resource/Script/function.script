@@ -1,0 +1,361 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+FUNCTIONFILE
+
+///////////////
+/*
+# $jump1	//第一重跳跃
+
+@ 0
+
+//SETTIME 0
+//SETSCENE 228
+//SETPPOWER 128
+
+@ 1
+
+//SETTIME 0
+//SETSCENE 401
+//SETPPOWER 60
+
+@ 2
+//SETTIME 0
+//SETSCENE 302
+//SETPPOWER 60
+
+////////////////////
+# $jump2	//第二重跳跃
+
+@ 0
+
+//SETTIME 0
+//SETSCENE 404
+//SETPPOWER 108
+
+@ 1
+
+//SETTIME 0
+//SETSCENE 421
+//SETPPOWER 108
+
+@ 2
+
+//SETTIME 0
+//SETSCENE 446
+//SETPPOWER 108
+*/
+/////////////////
+# $GHX146Move	//X146使魔移动
+
+@ @@> 0
+
+SD [ghIndex] GHAIMX
+
+IF NOW@ % 360 < 240
+{
+	BCONTROL BTYPE_GHOST [ghIndex]
+		GHX GHY ROLL GH@ 60 - 30 * 15 + GHANGLE 0 GHSPEED
+}
+ELSE IF NOW@ % 360 - 240 !
+{
+	BCONTROL BTYPE_GHOST [ghIndex]
+		GHX GHY GHANGLE + 18000 0 GHSPEED
+}
+
+/////////////////
+# $ENX292Bullet	//X292子弹化为BEAM
+
+@ 1
+
+BEB BUX BUY
+	BUANGLE + 18000 0.5 13 0
+	600 true true 120 0xff
+
+/////////////////
+# $ST3AFireShoot	//3A火球
+
+@ @@%= 400 180
+
+SD [xBase] RAND % 440
+
+ST 2 xBase 0
+
+RAMA false
+	xBase 0 440 - xBase 480 0 [angle]
+
+DIST xBase 0 440 - xBase 480 [length]
+
+SDf [speed] length /f 80.0
+
+EFFSETUPEX 2 60 120
+	xBase 0 0 2
+	angle speed 0.0
+SD [_0] 0
+
+@ @@%[] 400 190 235
+
+IF _0 ! * PBSLOW
+{
+	SD [_0] NOW@ + 30
+	EFFSETUPCHASE 3 CHARA / 2 + 58 120
+		PX PY 3 45 2
+}
+
+@ @@> 0
+
+IF NOW@ - _0 !
+{
+	SD [_0] -1
+	EFFOFF 2
+	GB DIFFI * 0x1000 + 0x8300 0xff 0xff
+		TX 3 TY 3 0 0.0
+		0 20 480
+}
+SD [notZangyue] CHARA - 2 ! * PBSLOW !
+IF _0 < 0 + PBINFI ! * notZangyue
+{
+	COLLISION_CIRCLE PX PY
+		TX 2 TY 2 25 [bCollision]
+	IF bCollision
+	{
+		COLLAPSE
+	}
+}
+
+////////////////
+# $ENX380Bullet	//X380子弹拐角
+
+@ @@> 0
+
+ACONTROL BUI 24
+	TIMEREQUAL 180 SPEEDSET 0
+	TIMEREQUAL 195 SPEEDSET NOW@
+	TIMEREQUAL 195 ANGLESETADD 9000 
+	TIMEREQUAL 300 SPEEDSET 0
+	TIMEREQUAL 315 SPEEDSET NOW@
+	TIMEREQUAL 315 ANGLESETADD 9000
+
+///////////////
+# $GHX318Bullet	//X318子弹分裂
+
+@ @@[] 0 7
+
+A 8
+	TIMEREQUAL 18 CALLSCRIPT NOW# NOW@ + 8
+	TIMEREQUAL 18 FADEOUT
+BC 6 true
+	BUX BUY 2.0
+	37 NOW@ 8 0
+A 0
+
+@ @@[] 8 15
+
+A 4
+	EVERY YSETACCADD 0 1
+BC 5 true
+	BUX BUY 2.0
+	10 NOW@ - 8 8 0
+A 0
+
+@ @@[] 16 23
+
+A 8
+	TIMEREQUAL 25 CALLSCRIPT NOW# NOW@ + 8
+	TIMEREQUAL 25 FADEOUT
+BC 8 true
+	BUX BUY 2.5
+	37 NOW@ - 16 8 0
+A 0
+
+@ @@[] 24 31
+
+A 4
+	EVERY YSETACCADD 0 1
+BC 6 true
+	BUX BUY 1.5
+	10 NOW@ - 24 8 0
+A 0
+
+@ @@[] 32 39
+
+A 8
+	TIMEREQUAL 18 CALLSCRIPT NOW# NOW@ + 8
+	TIMEREQUAL 18 FADEOUT
+BC 8 true
+	BUX BUY 2.0
+	37 NOW@ - 32 8 0
+A 0
+
+@ @@[] 40 47
+
+A 4
+	EVERY YSETACCADD 0 1
+BC 6 true
+	BUX BUY 2.0
+	8 NOW@ - 40 8 0
+A 0
+
+@ @@[] 48 55
+
+A 8
+	TIMEREQUAL 25 CALLSCRIPT NOW# NOW@ + 8
+	TIMEREQUAL 25 FADEOUT
+BC 10 true
+	BUX BUY 2.5
+	37 NOW@ - 48 8 0
+A 0
+
+@ @@[] 56 63
+
+A 4
+	EVERY YSETACCADD 0 1
+BC 7 true
+	BUX BUY 1.5
+	8 NOW@ - 56 8 0
+A 0
+
+@ @@[] 64 71
+
+A 8
+	TIMEREQUAL 18 CALLSCRIPT NOW# NOW@ + 8
+	TIMEREQUAL 18 FADEOUT
+BC 3 true
+	BUX BUY 2.0
+	37 NOW@ - 64 8 0
+BC 6 true
+	BUX BUY 2.0
+	37 NOW@ - 64 16 0
+A 0
+
+@ @@[] 72 79
+
+A 4
+	EVERY YSETACCADD 0 1
+BC 3 true
+	BUX BUY 2.0
+	10 NOW@ - 72 8 0
+BC 5 true
+	BUX BUY 2.0
+	10 NOW@ - 72 32 0
+A 0
+
+@ @@[] 80 87
+
+A 8
+	TIMEREQUAL 25 CALLSCRIPT NOW# NOW@ + 8
+	TIMEREQUAL 25 FADEOUT
+BC 4 true
+	BUX BUY 2.5
+	37 NOW@ - 80 8 0
+BC 8 true
+	BUX BUY 2.5
+	37 NOW@ - 80 16 0
+A 0
+
+@ @@[] 88 95
+
+A 4
+	EVERY YSETACCADD 0 1
+BC 3 true
+	BUX BUY 1.5
+	9 NOW@ - 88 8 0
+BC 5 true
+	BUX BUY 1.5
+	9 NOW@ - 88 32 0
+A 0
+
+/////////////////
+# $ST3BTrap	//3B陷阱
+
+@ @@%= 400 180
+
+SD [xBase] RAND % 200 + 120
+
+ST 2 xBase 0
+
+RAMA false
+	xBase 0 440 - xBase 480 0 [angle]
+
+DIST xBase 0 440 - xBase 480 [length]
+
+SDf [speed] length /f 80.0
+
+EFFSETUPEX 2 61 120
+	xBase 0 0 2
+	angle speed 0.0
+SD [_0] 0
+
+@ @@%[] 400 190 235
+
+COLLISION_CIRCLE PX PY
+	TX 2 TY 2 128 [bTraped]
+
+IF _0 ! * bTraped
+{
+	EFFSETUP 3 62
+		TX 2 TY 2 60
+	SD [_0] -1
+	EFFOFF 2
+	GB DIFFI * 0x1000 + 0x8400 0xff 0xff
+		TX 2 TY 2 0 0.0
+		0 20 480
+}
+
+///////////
+# $ENX490Bullet	//X490子弹镜子
+
+@ @@[ 0
+
+SD [angle] BUANGLE % 36000
+
+SD [xRightO] BUX > 280
+SD [xLeftO] BUX < 160
+SD [yTopO] BUY < 30
+SD [yBottomO] BUY > 170
+
+SD [angleRB] angle < 9000
+SD [angleRBN] angleRB !
+SD [angleRT] angle > 27000
+SD [angleRTN] angleRB !
+SD [angleB] angle < 18000
+SD [angleBN] angleB !
+
+SD [bTrans] false
+IF angleBN * yTopO
+{
+	SD [xSetVal] BUX * 3 - 440
+	SD [ySetVal] 480
+	SD [colSetVal] 1
+	SD [bTrans] true
+}
+ELSEIF angleB * yBottomO
+{
+	SD [xSetVal] BUX * 3 - 440
+	SD [ySetVal] 170
+	SD [colSetVal] 1
+	SD [bTrans] true
+}
+ELSEIF angleRT + angleRB * xRightO
+{
+	SD [xSetVal] 40
+	SD [ySetVal] BUY * 2 + 110
+	SD [colSetVal] 0
+	SD [bTrans] true
+}
+ELSEIF angleRTN * angleRBN * xLeftO
+{
+	SD [xSetVal] 400
+	SD [ySetVal] BUY * 2 + 110
+	SD [colSetVal] 0
+	SD [bTrans] true
+}
+
+IF bTrans
+{
+	ACONTROL BUI 20
+		TIMEREQUAL BU@ + 1 XSET xSetVal
+		TIMEREQUAL BU@ + 1 YSET ySetVal
+		TIMEREQUAL BU@ + 1 COLORSET colSetVal
+		TIMEREQUAL BU@ + 1 TYPESET 4
+		TIMEREQUAL BU@ + 1 SPEEDSETADD -60
+}

@@ -1,0 +1,1264 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+CONTROLFILE
+
+# STATE_TITLE
+
+@ 1
+
+MUSICCHANGE 1 true
+
+BGVALUE 0 48
+	320 240 640 480
+	1 1 1 1
+	0xffffffff
+
+SD [i] 8
+LOOP [i]
+{
+	SD [j] 7 - i
+	SELBUILD j 0
+		560 32 * j + 100 1 0
+		j + 1 1 8 32 16
+		D 2 D 3
+		-0.5 -0.5
+		-1 0
+		1 0
+		j - 1 ! j - 1 !
+}
+
+SELSET 8 SEL true
+
+
+@ @@> 0
+SDu [color_0] ROLL TIME 127 
+	 * 0x2000000 + 0xffffff 
+SDu [color_1] 0xffffffff -u Du [color_0] + 0xffffff
+
+BGCOLOR 0
+	Du [color_0]
+	Du 1
+	Du [color_1]
+	Du 3
+
+
+IF SELCOMPLETE
+{
+	IF SEL !
+	{
+		SETSTATE STATE_DIFFICULT_SELECT
+		SETTIME 0
+		SETSCENE 100
+	}
+	IF SEL - 1 !
+	{
+		SETSTATE STATE_DIFFICULT_SELECT
+		SETTIME 0
+		SETSCENE 900
+	}
+	IF SEL - 2 !
+	{
+		SETSTATE STATE_RANGE
+		SETTIME 0
+	}
+	IF SEL - 3 !
+	{
+		SETSTATE STATE_REPLAY
+		SETTIME 0
+	}
+	IF SEL - 4 !
+	{
+		SETSTATE STATE_RESAULT
+		SETTIME 0
+	}
+	IF SEL - 5 !
+	{
+		SETSTATE STATE_MUSIC
+		SETTIME 0
+	}
+	IF SEL - 6 !
+	{
+		SETSTATE STATE_OPTION
+		SETTIME 0
+	}
+	IF SEL - 7 !
+	{
+		RETURN PQUIT
+	}
+}
+
+# STATE_DIFFICULT_SELECT
+
+@ 1
+
+SELCLEAR
+
+BGVALUE 0 49
+	320 240 640 480
+	1 1 1 1
+	0xffffffff
+
+BGFLAG 0 BG_LIGHTUP
+
+BGVALUE 2 0
+	320 56 256 32
+	1 4 4 32
+	0xffffffff
+
+SD [bIsExtra] GETSCENE < 900 !
+SD [offset] bIsExtra * 30
+
+BGVALUE 16 1
+	offset + 300 offset + 200 400 - offset 240 - offset
+	1 1 1 1
+	0xA0000000
+
+IF bIsExtra !
+{
+	SD [i] 3
+	LOOP [i]
+	{
+		SD [j] 2 - i
+		SELBUILD j 0
+			j * 80 + 220  j * 80 + 120 1 0
+			j + 1 3 4 16 16
+			D 2 D 3
+			-1.5 0
+			j * -5 - 5  j * -5 + 16.25
+			1.5 0
+			false false
+	}
+	SELSET 3 DIFFI true
+}
+ELSE
+{
+	SELBUILD 0 0
+		280 180 1 0
+		4 3 4 16 16
+		D 2 D 3
+		-1.5 0
+		-8.75 12.5
+		1.5 0
+		false false
+
+	SELBUILD 1 0
+		380 280 1 0
+		1 4 4 16 16
+		D 2 D 3
+		-1.5 0
+		-15 6.25
+		1.5 0
+		false false
+
+	SELSET 2 0 true
+}
+
+@ @@> 0
+
+IF SELCOMPLETE
+{
+	SELCLEAR
+
+	IF GETSCENE < 900
+	{
+		SETDIFFI SEL
+	}
+	ELSE
+	{
+		SETDIFFI SEL + 3
+	}
+
+	BGVALUE 4 0
+		112 378 256 64
+		DIFFI % 4 + 1 DIFFI / 4 + 3 4 16
+		0xffffffff
+
+	BGCOLOR 0
+		0xffffffff
+		0xffffffff
+		0xffffffff
+		0xffffffff
+
+	SETSTATE STATE_PLAYER_SELECT
+	SETTIME 0
+}
+
+# STATE_PLAYER_SELECT
+
+@ 1
+
+MUSICCHANGE 1 false
+SELCLEAR
+BGOFF 16
+
+BGVALUE 0 49
+	320 240 640 480
+	1 1 1 1
+	0xffffffff
+
+BGFLAG 0 BG_LIGHTRED
+
+SELCLEAR
+
+IF MODE - 3
+{
+	BGVALUE 4 0
+		112 378 256 64
+		DIFFI % 4 + 1 DIFFI / 4 + 3 4 16
+		0xffffffff
+}
+
+SD [i] 4
+LOOP [i]
+{
+	SD [j] 3 - i
+	SELBUILD j 9
+		-240 240 1.875 1.875
+		j % 2 * 2 + 2 j / 2 + 1 4 4 16
+		D 2 D 3
+		40 0
+		-40 0
+		0 0
+		false true
+
+	SELBUILD j 9
+		-240 240 1.875 1.875
+		j % 2 * 2 + 1 j / 2 + 1 4 4 16
+		D 2 D 3
+		30 0
+		-30 0
+		0 0
+		false false
+
+	IF MODE - 3
+	{
+		SELBUILD j 0
+			460 608 1 0
+			j + 1 2.125 4 4 16
+			D 2 D 3
+			0 -18
+			0 0
+			0 0
+			false true
+	}
+}
+
+SELSET 4 CHARA false
+
+SD [bNormal] MODE !
+SD [bPractice] bNormal !
+
+BGVALUE 2 0
+	320 56 bNormal + 1 * 128 32
+	bPractice * 3 + 2 4 bPractice + 1 * 4 32
+	0xffffffff
+
+@ @@> 0
+
+SD [tdepth] RESERVEBEGIN + 3
+SD [bRangeMode] MODE - 3 !
+
+IF D tdepth !
+{
+	IF MODE - 2 !
+	{
+		BGVALUE 16 1
+			170 265 320 230
+			1 1 1 1
+			0xA0000000
+	}
+	ELSEIF MODE - 3 !
+	{
+		BGVALUE 16 1
+			365 280 480 340
+			1 1 1 1
+			0xA0000000
+	}
+}
+ELSEIF D tdepth - 1 ! * bRangeMode
+{
+	BGVALUE 16 1
+		320 270 600 380
+		1 1 1 1
+		0xA0000000
+}
+
+IF SELCOMPLETE
+{
+	SETCHARA SEL
+	IF MODE !
+	{
+		IF DIFFI < 3
+		{
+			SETSCENE DIFFI + 100
+		}
+		ELSEIF DIFFI - 3 !
+		{
+			SETSCENE 900
+		}
+		ELSE
+		{
+			SETSCENE 1000
+		}
+	}
+	IF MODE - 2 !
+	{
+		SETSCENE ISEL * 100 + 100 + DIFFI
+	}
+	SETSTATE STATE_START
+}
+
+# STATE_PAUSE
+
+@ 1
+
+SD [ptsec] RESERVEBEGIN
+SD [ptsel] RESERVEBEGIN + 1
+
+IF D ptsec !
+{
+	SD ptsec 1
+	SD ptsel REPLAYMODE
+}
+
+IF D ptsec - 1 !
+{
+	SELCLEAR
+	SD ptsec 0x10
+	SD [i] 3
+	LOOP [i]
+	{
+		SD [j] 2 - i
+		SELBUILD j 0
+			220 j * 40 + 240 1 0
+			3 19 + j 8 32 16
+			D 2 D 3
+			-1 -0.5
+			0 0
+			2 0.5
+			false false
+	}
+	SELSET 3 D ptsel true
+}
+
+IF D ptsec - 0x10 ! * SELCOMPLETE
+{
+	IF SEL !
+	{
+		SD ptsec 0xff
+		SD ptsel 0
+		SELCLEAR
+
+		SETSTATE STATE_START
+	}
+	ELSE
+	{
+		SD [bConfirm] 0
+		SD ptsec 0x10 * SEL + 0x20
+		SD ptsel SEL
+		SELCLEAR
+	}
+}
+
+ELSE IF D ptsec > 0x10
+{
+	SELCONFIRM [bConfirm]
+
+	IF SELCOMPLETE
+	{
+		IF bConfirm
+		{
+			IF D ptsec - 0x30 !
+			{
+
+				SETSTATE STATE_TITLE
+			}
+			ELSE
+			{
+				SETSTATE STATE_START
+			}
+			SD ptsec 0xff
+			SETTIME 0
+		}
+		ELSE
+		{
+			SD ptsec 1
+		}
+		SELCLEAR
+	}
+}
+
+# STATE_RANGE
+
+@ 1
+
+BGVALUE 0 49
+	320 240 640 480
+	1 1 1 1
+	0xffffffff
+
+BGFLAG 0 BG_LIGHTUP
+
+BGVALUE 2 0
+	320 56 128 32
+	5 4 8 32
+	0xffffffff
+
+BGVALUE 16 1
+	170 230 145 100
+	1 1 1 1
+	0xA0000000
+
+ISELBUILD 0
+	"领域界练习"
+	120 200 INFO_GREEN
+	false false
+ISELBUILD 1
+	"各关卡练习"
+	120 240 INFO_GREEN
+	false false
+
+ISELSET 2 0 true
+
+@ @@> 0
+
+IF ISELCOMPLETE
+{
+	SETSCENE 100
+	IF ISEL
+	{
+		SETMODE 2
+		SETSTATE STATE_DIFFICULT_SELECT
+	}
+	ELSE
+	{
+		SETMODE 3
+		SETSTATE STATE_PLAYER_SELECT
+	}
+	SETTIME 0
+
+}
+
+# STATE_REPLAY
+
+@ 1
+
+MUSICCHANGE 1 false
+BGVALUE 0 49
+	320 240 640 480
+	1 1 1 1
+	0xffffffff
+
+BGFLAG 0 BG_LIGHTUP
+
+BGVALUE 2 0
+	320 56 128 32
+	6 4 8 32
+	0xffffffff
+
+BGVALUE 16 1
+	320 265 610 390
+	1 1 1 1
+	0xA0000000
+	
+@ @@> 0
+
+SD [ptdepth] RESERVEBEGIN + 2
+SD [ptrpydifflv] RESERVEBEGIN + 5
+
+IF D ptdepth - 1 !
+{
+	BGVALUE 4 0
+		112 378 256 64
+		D ptrpydifflv % 4 + 1 D ptrpydifflv / 4 + 3 4 16
+		0xffffffff
+}
+
+# STATE_RESAULT
+
+@ 1
+
+BGVALUE 0 49
+	320 240 640 480
+	1 1 1 1
+	0xffffffff
+
+BGFLAG 0 BG_LIGHTUP
+
+BGVALUE 2 0
+	320 56 128 32
+	7 4 8 32
+	0xffffffff
+
+@ @@> 0
+
+SD [ptsec] RESERVEBEGIN + 1
+SD [ptdiff] RESERVEBEGIN + 2
+SD [ptchara] RESERVEBEGIN + 3
+
+IF D ptsec < -1
+{
+	BGVALUE 16 1
+		160 160 260 140
+		1 1 1 1
+		0xA0000000
+
+	SELCLEAR
+	BGOFF 3
+	BGOFF 4
+
+	SD [i] 3
+	LOOP [i]
+	{
+		SD [j] 2 - i
+		SELBUILD j 0
+			160 j * 40 + 128 1 0
+			2 22 + j 4 32 8
+			D 2 D 3
+			-1 -1
+			-5 -5 * j - 5
+			1 0
+			false false
+	}
+	SELSET 3 D ptsec + 0xf true
+
+	SD ptsec -1
+}
+ELSEIF D ptsec < 0
+{
+	IF SELCOMPLETE
+	{
+		SD ptsec SEL
+		IF D ptsec - 2 !
+		{
+			BGVALUE 16 1
+				300 245 580 320
+				1 1 1 1
+				0xA0000000
+		}
+	}
+}
+ELSEIF D ptsec - 2 !
+{
+	RETURN POK
+}
+ELSEIF D ptdiff < -1
+{
+	BGVALUE 16 1
+		160 260 200 350
+		1 1 1 1
+		0xA0000000
+	SELCLEAR
+	BGVALUE 3 0
+		112 80 256 32
+		2 D ptsec + 22 4 32
+		0xffffffff
+
+	BGOFF 4
+
+	SD [selNum] 5 + D ptsec
+	SD [i] selNum
+	LOOP [i]
+	{
+		SD [j] selNum - 1 - i
+		SELBUILD j 0
+			160 j * 48 + 120 0.75 0
+			j % 4 + 1 j / 4 + 3 4 16 8
+			D 2 D 3
+			-1 -1
+			-5 -6 * j + 35
+			1 0
+			false false
+	}
+	IF D ptsec
+	{
+		SELBUILD 6 0
+			160 408 1 0
+			3 25 8 32 8
+			D 2 D 3
+			-1 -1
+			-5 -1
+			1 0
+			false false
+		SD [selNum] 7
+	}
+	SELSET selNum D ptdiff + 0xf true
+
+	SD ptdiff -1
+}
+ELSE IF D ptdiff < 0
+{
+	IF SELCOMPLETE
+	{
+		SD ptdiff SEL
+	}
+}
+ELSE IF D ptchara < -1
+{
+	BGVALUE 16 1
+		320 240 620 310
+		1 1 1 1
+		0xA0000000
+	SELCLEAR
+	IF D ptdiff < 6
+	{
+		BGVALUE 4 0
+			120 400 256 64
+			D ptdiff % 4 + 1 D ptdiff / 4 + 3 4 16
+			0xffffffff
+	}
+	ELSE
+	{
+		BGVALUE 4 0
+			120 400 128 32
+			3 25 8 32
+			0xffffffff
+	}
+
+	SELBUILD 0 0
+		-120 112 1 0
+		1 9 8 32 8
+		D 2 D 3
+		35 0
+		0 0
+		0 0
+		false false
+	SELBUILD 1 0
+		-120 112 1 0
+		1.6666667 9 5.3333333 32 8
+		D 2 D 3
+		35 0
+		0 0
+		0 0
+		false false
+	SELBUILD 2 0
+		-120 112 1 0
+		3.5 9 8 32 8
+		D 2 D 3
+		35 0
+		0 0
+		0 0
+		false false
+	SELBUILD 3 0
+		-120 112 1 0
+		8 9 16 32 8
+		D 2 D 3
+		35 0
+		0 0
+		0 0
+		false false
+	IF D ptsec
+	{
+		SELBUILD 4 0
+			-120 112 1 0
+			4 25 8 32 8
+			D 2 D 3
+			35 0
+			0 0
+			0 0
+			false false
+	}
+	SELSET D ptsec + 4 D ptchara + 0xf false
+
+	SD ptchara -1
+}
+IF D ptchara > -2
+{
+	SD ptchara SEL
+	RETURN POK
+}
+
+# STATE_MUSIC
+
+@ 1
+
+BGVALUE 0 49
+	320 240 640 480
+	1 1 1 1
+	0xffffffff
+
+BGFLAG 0 BG_LIGHTUP
+
+BGVALUE 2 0
+	320 56 128 32
+	8 4 8 32
+	0xffffffff
+
+BGVALUE 16 1
+	320 265 500 380
+	1 1 1 1
+	0xA0000000
+
+# STATE_OPTION
+
+@ 1
+
+BGVALUE 0 49
+	320 240 640 480
+	1 1 1 1
+	0xffffffff
+
+BGFLAG 0 BG_LIGHTUP
+
+BGVALUE 2 0
+	320 56 128 32
+	8 2 8 32
+	0xffffffff
+
+BGVALUE 16 1
+	320 260 480 380
+	1 1 1 1
+	0xA0000000
+
+SD [i] 7
+LOOP [i]
+{
+	SD [j] 6 - i
+	IF j
+	{
+		SD [y] j * 32 + 224
+	}
+	ELSE
+	{
+		SD [y] 100
+	}
+	SELBUILD j 0
+		160 y 1 0
+		j + 1 2 8 32 4
+		D 2 D 3
+		0 0
+		0 0
+		0 0
+		false false
+}
+
+SD [i] 5
+LOOP [i]
+{
+	SD [j] 4 - i
+	SD [y] j * 30 + 108
+
+	SELBUILD j + 0x10 0
+		360 y 1 0
+		j + 4 3 8 32 4
+		D 2 D 3
+		0 0
+		0 0
+		0 0
+		true false
+
+	SD [k] 2
+	LOOP [k]
+	{
+		SD [l] k !
+
+		SELBUILD j * 2 + l + 0x80 0
+			l * 16 + 460 y 1 0
+			1 3 32 32 4
+			D 2 D 3
+			0 0
+			0 0
+			0 0
+			true false
+	}
+}
+
+SD [i] 2
+LOOP [i]
+{
+	SD [j] i !
+	SELBUILD j * 0x10 + 0x90 0
+		380 j * 32 + 256 1 0
+		1 3 32 32 4
+		D 2 D 3
+		0 0
+		0 0
+		0 0
+		true false
+}
+
+SD [i] 4
+LOOP [i]
+{
+	SD [j] 3 - i
+
+	SD [k] 2
+	LOOP [k]
+	{
+		SD [l] k !
+
+		SELBUILD l * 0x10 + 0xB0 + j 0
+			j * 16 + 348 l * 32 + 320 1 0
+			1 3 32 32 4
+			D 2 D 3
+			0 0
+			0 0
+			0 0
+			true false
+	}
+}
+
+SELSET 7 0 true
+
+# STATE_CONTINUE
+
+@ 1
+
+SD [ptsec] RESERVEBEGIN
+IF D ptsec !
+{		
+	SD [i] 2
+	LOOP [i]
+	{
+		SD [j] i !
+		SELBUILD j 0
+			j * 80 + 180 280 1 0
+			j + 13 18 32 32 8
+			D 2 D 3
+			-1 -0.5
+			0 0
+			2 0.5
+			false false
+	}
+
+	SD [bNotExtra] GETSCENE < 900
+	SD [bNotRange] MODE < 3 * bNotExtra
+	SDf [foffset] bNotRange + 1
+
+	SELBUILD 8 0
+		220 220 1 0
+		foffset + 2 21.0 /f foffset 8 32 /f foffset 8
+		D 2 D 3
+		0 0
+		0 0
+		0 0
+		true false
+
+	IF bNotRange
+	{
+		SELBUILD 0x10 0
+			236 236 1 0
+			1 3 32 32 4
+			D 2 D 3
+			0 0
+			0 0
+			0 0
+			true false
+	}
+
+	SELSET 2 1 false
+	SD ptsec 1
+}
+ELSEIF SELCOMPLETE
+{
+	SELCLEAR
+	SD ptsec SEL + 0x10
+}
+
+# STATE_OVER
+
+@ 1
+
+BGVALUE 0 49
+	320 240 640 480
+	1 1 1 1
+	0xffffffff
+
+BGFLAG 0 BG_LIGHTUP
+
+BGVALUE 4 0
+	120 400 256 64
+ 	DIFFI % 4 + 1 DIFFI / 4 + 3 4 16
+ 	0xffffffff
+
+BGVALUE 16 1
+	320 240 580 390
+	1 1 1 1
+	0xA0000000
+
+@ @@> 0
+
+SD [ptdepth] RESERVEBEGIN + 1
+SD [ptsec] RESERVEBEGIN + 2
+SD [ptnowchar] RESERVEBEGIN + 3
+SD [ptinsert] RESERVEBEGIN + 4
+
+IF D ptdepth !
+{
+	SD [i] 2
+	LOOP [i]
+	{
+		SD [j] i !
+		SELBUILD j 0
+			80 * j + 280 405 1 0
+			13 + j 18 32 32 8
+			D 2 D 3
+			-1 -0.5
+			0 0
+			2 0.5
+			false false
+	}
+
+	SELBUILD 2 0
+		320 360 1 0
+		3 18 4 32 8
+		D 2 D 3
+		0 0
+		0 0
+		0 0
+		true false
+
+	SELSET 2 1 false
+
+	SELBUILD 0x10 0
+		320 70 1 0
+		5 21 8 32 8
+		D 2 D 3
+		0 0
+		0 0
+		0 0
+		true false
+
+	SELBUILD 0x11 0
+		160 110 1 0
+		6 21 8 32 8
+		D 2 D 3
+		0 0
+		0 0
+		0 0
+		true false
+
+	SD [i] 4
+	LOOP [i]
+	{
+		SD [j] 3 - i
+		SELBUILD j + 0x12 0
+			160 j * 35 + 145 1 0
+			j / 2 + 7 j % 2 + 18 8 32 8
+			D 2 D 3
+			0 0
+			0 0
+			0 0
+			true false
+	}
+
+	SD [i] 2
+	LOOP [i]
+	{
+		SD [j] i !
+		SELBUILD j + 0x16 0
+			160 j * 35 + 285 1 0
+			4 j + 20 4 32 8
+			D 2 D 3
+			0 0
+			0 0
+			0 0
+			true false
+	}
+
+	SD [i] 2
+	LOOP [i]
+	{
+		SD [j] i !
+		SD [k] 16
+		LOOP [k]
+		{
+			SD [l] 15 - k
+			SELBUILD j * 0x10 + 0x20 + l 0
+				l * 16 + 300 j * 35 + 110 1 0
+				1 3 32 32 8
+				D 2 D 3
+				0 0
+				0 0
+				0 0
+				true false
+		}
+
+		SD [k] 2
+		LOOP [k]
+		{
+			SD [l] k !
+			SD [nSel] j * 0x10 + 0x40 + l
+			SD [selX] l * 16 + 300
+			SD [selY] j * 35 + 180
+			SELBUILD nSel 0
+				selX selY 1 0
+				1 3 32 32 8
+				D 2 D 3
+				0 0
+				0 0
+				0 0
+				true false
+			SELBUILD nSel + 0x30 0
+				selX selY + 105 1 0
+				1 3 32 32 8
+				D 2 D 3
+				0 0
+				0 0
+				0 0
+				true false
+		}
+	}
+
+	SD [i] 16
+	LOOP [i]
+	{
+		SD [j] 15 - i
+		SELBUILD j + 0x60 0
+			j * 16 + 300 250 1 0
+			1 3 32 32 8
+			D 2 D 3
+			0 0
+			0 0
+			0 0
+			true false
+	}
+}
+ELSEIF D ptdepth - 1 !
+{
+	IF SELCOMPLETE
+	{
+		SELCLEAR
+		IF SEL !
+		{
+			SD ptdepth 2
+		}
+		ELSE
+		{
+			IF MODE
+			{
+				BGOFF 4
+				SETTIME 0
+				SETSTATE STATE_PLAYER_SELECT
+				RETURN PTURN
+			}
+			ELSE
+			{
+				SD ptdepth 7
+			}
+		}
+	}
+}
+ELSEIF D ptdepth - 3 !
+{
+	IF D ptsec - 2
+	{
+		SD [xOffset] D ptsec * 42
+		BGVALUE 5 1
+			D ptnowchar * 11 + 332 + xOffset D ptsec * 30 + 330 11 4
+			1 1 1 1
+			0xffffffff
+	}
+	ELSE
+	{
+		BGOFF 5
+	}
+}
+ELSEIF D ptdepth - 4 !
+{
+	BGVALUE 6 0
+		480 250 256 32
+		3 19 4 32
+		0xffffffff
+	SD [i] 2
+	LOOP [i]
+	{
+		SD [j] i !
+		SELBUILD j 0
+			j * 80 + 440 290 1 0
+			j + 13 18 32 32 8
+			D 2 D 3
+			-1 -0.5
+			0 0
+			2 0.5
+			false false
+			
+	}
+	SELSET 2 1 false
+	SD ptdepth 5
+}
+ELSEIF D ptdepth - 5 !
+{
+	IF SELCOMPLETE
+	{
+		BGOFF 4
+		BGOFF 6
+		SELCLEAR
+		SD ptdepth SEL * -4 + 6
+	}
+}
+ELSEIF D ptdepth - 7 !
+{
+	BGOFF 4
+}
+ELSEIF D ptdepth - 8 !
+{
+	BGVALUE 5 1
+		D ptnowchar * 11 + 76 D ptinsert * 20 + 150 11 4
+		1 1 1 1
+		0xffffffff
+	IF D ptsec - 1 !
+	{
+		BGOFF 5
+	}
+}
+///////////////
+# STATE_ENDING
+
+@ 1
+
+BGVALUE 0 49
+	320 240 640 480
+	1 1 1 1
+	0xffffffff
+
+BGVALUE 16 1
+	180 240 360 200
+	1 1 1 1
+	0xA0000000 
+
+BGVALUE 15 1
+	500 240 280 480
+	1 1 1 1
+	0xFF000000
+
+MUSICCHANGE 6 true
+
+@ @@> 0
+
+SD [ptdepth] RESERVEBEGIN + 1
+SD [pnccont] RESERVEBEGIN + 2
+SD [ptimeinterval] RESERVEBEGIN + 3
+
+SD ptimeinterval D ptimeinterval + 1
+SD [bJump] D ptimeinterval > 120
+
+IF D ptdepth !
+{
+	ISELCLEAR
+	ISELBUILD 0
+		"体验版至此结束，辛苦了"
+		20 160 INFO_GREEN
+		true false
+	ISELBUILD 1
+		"按住射击键可以跳过ＥＮＤＩＮＧ"
+		20 300 INFO_YELLOW
+		true false
+	ISELBUILD 2
+		"策划／场景／人设"
+		400 100 INFO_RED
+		true false
+	ISELBUILD 3
+		"剧情／音乐"
+		440 120 INFO_RED
+		true false
+		
+	SD ptdepth 1
+}
+ELSEIF D ptdepth - 1 !
+{
+	IF CHECKKEY KS_FIRE KEY_DOWN + bJump
+	{
+		IF D pnccont
+		{
+			ISELBUILD 4
+				"请继续尝试不接续通关"
+				40 180 INFO_GREEN
+				true false
+		}
+		ELSE
+		{
+			ISELBUILD 4
+				"恭喜你完美通关"
+				40 180 INFO_GREEN
+				true false
+		}
+		ISELBUILD 5
+			"Ｔｈｏｒ／ｈ５ｎｃ"
+			400 150 INFO_RED
+			true false
+		SD ptdepth 2
+		
+		SD ptimeinterval 0
+	}
+}
+ELSEIF D ptdepth - 2 !
+{
+	IF CHECKKEY KS_FIRE KEY_DOWN + bJump
+	{
+		ISELBUILD 6
+			"请多支持国产免费同人游戏"
+			20 200 INFO_GREEN
+			true false
+		ISELBUILD 7
+			"引擎／特效／脚本系统"
+			380 200 INFO_BLUE
+			true false
+		ISELBUILD 8
+			"色指定／难度设定"
+			400 220 INFO_BLUE
+			true false
+		SD ptdepth 3
+		
+		SD ptimeinterval 0
+	}
+}
+ELSEIF D ptdepth - 3 !
+{
+	IF CHECKKEY KS_FIRE KEY_DOWN + bJump
+	{
+		ISELBUILD 9
+			"感谢ＺＵＮ给我们的幻想乡"
+			40 220 INFO_GREEN
+			true false
+		ISELBUILD 10
+			"ｈ５ｎｃ（１７）"
+			400 250 INFO_BLUE
+			true false
+		SD ptdepth 4
+		
+		SD ptimeinterval 0
+	}
+}
+ELSEIF D ptdepth - 4 !
+{
+	IF CHECKKEY KS_FIRE KEY_DOWN + bJump
+	{
+		ISELBUILD 11
+			"欢迎来玩《叛之境界》本篇"
+			20 240 INFO_GREEN
+			true false
+		ISELBUILD 12
+			"特别感谢"
+			440 300 INFO_GRAY
+			true false
+		SD ptdepth 5
+		
+		SD ptimeinterval 0
+	}
+}
+ELSEIF D ptdepth - 5 !
+{
+	IF CHECKKEY KS_FIRE KEY_DOWN + bJump
+	{
+		ISELBUILD 13
+			"真诚感谢大家！"
+			60 260 INFO_GREEN
+			true false
+		ISELBUILD 14
+			"某人"
+			460 330 INFO_GRAY
+			true false
+		SD ptdepth 6
+		
+		SD ptimeinterval 0
+	}
+}
+ELSEIF D ptdepth - 6 !
+{
+	IF CHECKKEY KS_FIRE KEY_DOWN + bJump
+	{
+		ISELCLEAR
+		SD ptdepth 0xff
+	}
+}

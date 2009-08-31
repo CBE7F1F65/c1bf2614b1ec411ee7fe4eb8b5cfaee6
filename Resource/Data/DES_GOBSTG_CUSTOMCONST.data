@@ -1,0 +1,14 @@
+[Header]
+GameVersion=96
+Signature=h5nc
+FileType=65
+
+[CustomConst]
+Type_1=jump1
+Type_2=jump2
+Type_3=GHX146Move
+Type_4=ENX292Bullet
+Type_5=ST3AFireShoot
+Type_6=ENX380Bullet
+Type_7=GHX318Bullet
+Type_8=ENX490Bullet

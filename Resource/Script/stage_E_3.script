@@ -1,0 +1,564 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+STAGEFILE
+////////////////////
+# 300	//演示
+
+@ 1
+
+MUSICCHANGE 0 true
+
+IF MODE !
+{
+	SETSCENE 400
+}
+
+@ 5
+
+BGSETUP 0 0x0300 true
+ENTEXASSIGN 24 24 24 24
+
+////////////////
+/*
+@ 20
+
+CALL $jump2 DIFFI
+*/
+////////////////
+
+@ @@[] 0 270
+
+DISABLEALLKEY
+
+@ @@[] 0 150
+
+SETPBSLOW false
+
+@ @@[] 151 240
+
+SETPBSLOW true
+
+@ @@[] 85 142
+
+SETPPOS 220 TIME - 85 * -2 + 380
+
+@ @@[] 143 155
+
+SETPPOS 220 TIME - 143 * 10 + 266
+
+@ @@[] 156 220
+
+SETPPOS 220 380
+
+@ 120
+
+SD [i] 2
+LOOP [i]
+{
+	EFFSETUPEX i 60 120
+		440 * i 0 0 0xff
+		i * 8000 + 5000 10.0 0.0
+}
+
+@ 180
+
+EFFSETUPEX 2 60 45
+	220 0 0 0xff
+	9000 5.0 0.0
+
+@ 190
+
+EFFSETUPEX 3 CHARA / 2 + 58 80
+	220 380 0 0xff
+	-9000 5.0 0.0
+
+@ @@> 270
+
+CHATON 0
+	1 0xff true
+	1 true "呼…真是危险……"
+	0 true "……"
+	1 true "…式？"
+	0 true "……咦？怎么了么？"
+	1 true "还说怎么了，你刚才就一直发呆般溜达，要不是我拉住你……"
+	0 true "嗯？啊，嗯……谢谢……不，对不起……"
+	1 true "喂，你真的没关系么？我怎么觉得你跟换了个人似的？"
+	0 true "换了个人……是啊……这到底都是……什么？"
+	1 true "（不好，怕是他着了魔，变得语无伦次不知所云了……）"
+	0 true "……无双……"
+	1 true "……"
+	0 true "这是……你的记忆么……"
+CHATOFF
+
+CHATON 1
+	2 0xff true
+	2 true "公、公主，恕在下失职……"
+	3 true "行啦行啦，这种法术不是你能够应对得了的。"
+	2 true "对不起……"
+	3 true "可是这倒令人担心了，咱们怎么会到这里来？"
+	2 true "这么一说…好像也是啊……不过此地温度异常，公主还是小心为上。"
+	3 true "你别先被那火球烧死才好……"
+CHATOFF
+
+CHATON 2
+	4 0xff true
+	4 true "好热好热！还是不要挑战这一关了！"
+	5 true "火焰是…历练……"
+	4 true "知道了知道了，不过是谁在这里还设置对话的，完全是平添垃圾嘛……"
+	5 true "有心人…自会发现……"
+	4 true "…恐怕是凤毛麟角吧……"
+CHATOFF
+
+SD [isWushuang] CHARA - 3 !
+IF CHATI - 0xff ! + isWushuang
+{
+	SETTIME 0
+	SETSCENE DIFFI + 304
+}
+
+/////////////////////
+# 304	//道中1
+
+@ 1
+
+BGSETUP 1 0x0302 true
+//背景火球
+BGSETUP 2 0x0304 true
+BGSETUP 4 0x0340 true
+
+@ 240
+
+BGSETUP 1 0 true
+
+//火球射击
+@ @@[ 180
+
+CALL $ST3AFireShoot TIME
+
+//拉线
+@ @@[]% 400 1600 400
+
+EB 0x0300 0xff
+	TIME % 800 < 400 * 100 + 170 0 9000 2.0
+	1 15 300 0x00000152
+
+//拦截
+@ @@[]% 400 2000 120
+
+SD [randX] RAND % 200 - 100
+EB 0x0302 0xff
+	TIME % 800 < 400 ! * 200 + 120 0 9000 5.0
+	0 5 80 0x00000042
+
+//主攻
+@ 2000
+
+EB 0x0304 0xff
+	220 0 9000 2.5
+	3 20 360 0x000000A5
+
+//排列
+@ @@[]% 2600 2780 20
+
+SD [diffiShift] DIFFI * 0x1000
+SD [xPos] TIME - 2580 % 240 * 2
+EB 0x0306 + diffiShift 0xff
+	xPos 0 9000 3.0
+	2 1 60 0x00000012
+EB 0x0306 + diffiShift 0xff
+	440 - xPos 0 9000 3.0
+	2 1 60 0x00000011
+
+@ 3060
+
+SETTIME 0
+SETSCENE 308
+
+//////////////
+# 308	//白血1
+
+@ 1
+
+EB 0x0380 40
+	0 0 3500 5.0
+	40 180 300 0x00000000
+
+BOSSUP
+
+/////////////
+# 312	//对话1
+
+@ 1
+
+EB 0x0001 40
+	TX 40 TY 40 9000 5.0
+	40 180 300 0x00000000
+
+@ @@> 0
+
+CHATON 0
+	1 4 false
+	4 false "啊哈哈，又见到你们了，真可说是ＧＲＥＡＴ！"
+	1 true "…竟然是你…"
+	0 true "！你，你知道我们？难道你知道人间的事情？"
+	4 false "那当然，你以为在下是谁？啊哈哈！"
+	1 true "是啊，你怎么可能…啊，式你好点了吗？"
+	0 true "我一直很好…只是刚才有点走神而已，不要紧的。"
+	1 true "那就好，不过看你刚才的样子，唉……"
+	4 false "喂，不要无视在下的存在！"
+	1 true "哦，抱歉。那你有没有看到其他人？"
+	4 false "唔…这个不一定…"
+	1 true "什么叫不一定！你这家伙真是无论在地上还是地下都这么让人窝火！"
+	4 false "啊哈哈，别生气别生气。在下是要说不一定的，如果你上来就选了别组的ＰＬＡＹＥＲ，自然就看到过别人了。"
+	1 true "什么乱七八糟的！受不了了…赶快闪开吧，我们继续赶路！"
+	4 false "哎呀哎呀，好不容易来了，就好好陪在下玩玩吧！"
+	0 true "六年前…蒙着面的…那位大人…"
+	1 true "咦？式，你在说什么？"
+	0 true "那是…大哥哥……？"
+CHATOFF
+
+CHATON 1
+	2 4 false
+	4 false "啊哈哈，看来是新面孔啊，在地上没见过你。"
+	2 true "你是谁？"
+	3 true "地上…？你是真的尧舜？"
+	4 false "那是在下以前的名字了，现在在下叫蒲牢，可是地界九王之…"
+	3 true "之？"
+	4 false "啊哈哈，在下介绍完了，那边那个还不赶快报上名来？"
+	2 true "我是努斯奎马，是公主的忠诚骑士。"
+	3 true "对这种家伙和必要认真……"
+	4 false "哎呀呀，咱们能见面确实不易，那你一定在玩ＰＲＡＣＴＩＣＥＭＯＤＥ吧？"
+	3 true "…真是服了你了，竟然我都听不懂…"
+	4 false "好，念这份缘，给你们奖励一个ＢＯＭＢ好了！"
+	2 true "啊，真的加了……"
+	4 false "啊哈哈，骗你们的！"
+	2 true "啊，又减掉了……"
+	3 true "……杀了你！"
+CHATOFF
+
+CHATON 2
+	5 4 false
+	4 false "啊哈哈，你又来杀在下了么？"
+	5 true "火焰…恼人……"
+	4 false "说实话在下也比较头痛，总是用这西极火筒轰人，一点意思都没有。不过话说回来了，你竟然不怕火……"
+	5 true "我在…火中…历练……"
+	4 false "来，再试一吧！"
+	5 true "哼……"
+	4 false "呼，果然没用么……算了，反正你这家伙总是特例。"
+	4 true "你有资格说别人么……"
+	4 false "话说回来，你们怎么都不对在下感到吃惊呢？"
+	4 true "有什么好吃惊的？"
+	4 false "在下知道人间的事情啊！"
+	4 true "哦，这样啊。因为大体剧情已经看过一次了，我感觉不用一一吐槽。"
+	4 false "喂！你这句不就是在吐槽么！"
+CHATOFF
+
+CHATON 3
+	6 4 false
+	4 false "……"
+	6 true "……"
+	4 false "……"
+	6 true "……"
+	4 false "果然不说话么……"
+	6 true "……"
+	4 false "真是提不起劲来…你的灵魂在逐渐走向那个人，而你究竟是为什么还能以这种形式存在着……"
+	6 true "……"
+	4 false "啊哈哈，反正都无所谓了，世界上正因为还有许多在下所不知的事情，才让在下每日活得都有意义！"
+CHATOFF
+
+IF CHARA - 1 !
+{
+	IF CHATI - 10 !
+	{
+		SD [_0] 1
+	}
+	ELSEIF CHATI - 11 ! * _0
+	{
+		SD [_0] 0
+		SETPBOMB PBOMB + 1
+		SE SE_ITEM_EXTEND PX
+	}
+	ELSEIF CHATI - 12 !
+	{
+		SD [_0] 1
+	}
+	ELSEIF CHATI - 13 ! * _0
+	{
+		SD [_0] 0
+		SETPBOMB PBOMB - 1
+		SE SE_SYSTEM_CANCEL PX
+	}
+}
+ELSEIF CHARA - 2 !
+{
+	SETPBSLOW true
+	IF CHATI - 4 !
+	{
+		SD [_0] 1
+	}
+	ELSE IF CHATI - 5 ! * _0
+	{
+		SD [_0] 0
+		EFFSETUPCHASE 0 60 30
+			TX 40 TY 40 0xff 30 0xff
+	}
+}
+
+IF CHATI - 0xff !
+{
+	SETTIME 0
+	SETSCENE 316
+}
+
+///////////////
+# 316	//PLRANGEOhMyGod
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0320 0xffff
+
+@ 1
+
+BGSETUP 0 0x0300 false
+BGSETUP 2 0x0304 false
+BGSETUP 4 0x0340 false
+BGSETUP 8 0x0320 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x0382 40
+	TX 40 TY 40 0 5.0
+	40 200 240 0x00100094
+
+BOSSUP
+
+///////////////
+# 320	//道中2
+
+@ 1
+
+EB 0x0000 40
+	TX 40 TY 40 -4500 5.0
+	40 200 240 0x00000000
+
+@ @@[ 180
+
+CALL $ST3AFireShoot TIME
+
+//拉圈
+@ @@<% 1400 144
+
+SD [bRight] TIME / 144 % 2
+EB 0x0308 0xff
+	bRight * 440 120 bRight * 18000 4.0
+	1 5 90 0x00000062
+
+//火雨
+@ 480
+
+EB 0x0310 0xff
+	220 0 9000 1.5
+	3 15 700 0x000011A4
+
+@ 1500
+
+SETTIME 0
+SETSCENE 324
+
+///////////////
+# 324	//对话2
+
+@ 1
+
+BGSETUP 4 0x0380 true
+
+EB 0x0001 40
+	440 0 12500 5.0
+	40 180 300 0x00000000
+
+@ @@> 0
+
+CHATON 0
+	1 4 true
+	1 true "你还要捣乱么？"
+	4 false "哎呀，真是失礼，怎么能说在下捣乱呢？"
+	1 true "真恼人…（看式的神色也是飘忽不定，究竟都是怎么一回事…）"
+	4 false "哦？想知道式怎么样了吗？"
+	1 true "！你难道有读心术？"
+	4 false "啊哈哈，哪里哪里，只是这些都写在你脸上了而已。"
+	1 true "我…我哪有……那你快说他到底怎么……"
+	4 false "在下不告诉你！"
+	1 true "……"
+	4 false "啊哈哈，别那么凶狠嘛，看他的样子啊……"
+	1 true "他的样子？"
+	4 false "……还是不说了……"
+	1 true "……"
+	0 true "我被…派往中原…本应是……"
+	1 true "式！"
+CHATOFF
+
+CHATON 1
+	3 4 false
+	4 false "嗯，还不错嘛，虽说是七条命起飞，但不ＣＯＮＴＩＮＵＥ就见到在下也算是够格了。"
+	3 true "你这第三关的ＢＯＳＳ还嚣张什么……"
+	4 false "啊哈哈，小看在下的话，可要你吃苦头哦！"
+	2 true "公主…你们究竟在说什么？"
+	4 false "哦？看来一行人中只有你还能保持神志清醒啊，不愧是圣枪的后继者。"
+	2 true "！你用了什么妖术！快把公主恢复原状！"
+	4 false "别生气别生气，在下哪有这等通天本事？"
+	2 true "那是谁？究竟怎么回事？"
+	4 false "啊哈哈，普通的精神侵蚀而已，现在玩家的灵魂正在逐渐融入歌姬的身体中。"
+	2 true "什么？那怎么办？"
+	4 false "没什么怎么办的，式那边更严重……真是担心啊！"
+	2 true "你个反派人物担心什么！快说是谁干的！"
+	4 false "不要激动不要激动，如此强烈的干涉，恐怕是…大姐吧……"
+	3 true "ＳＮＡＫＥ，赶快关闭游戏！"
+	2 true "公主……"
+CHATOFF
+
+CHATON 2
+	4 4 false
+	4 false "你们有什么遗言吗？"
+	4 true "……"
+	5 true "……"
+	4 false "啊哈哈，看到在下连魂都吓飞了吗？"
+	4 true "……"
+	5 true "闪开……"
+	4 false "哦？够有胆识，不愧是曾杀过在下一次的恶魔。"
+	4 true "果然，有什么地方不太对劲……"
+	4 false "啊哈哈！你果然够ＳＭＡＲＴ，这么快就发现了世界的异变……"
+	4 true "今天的头发怎么也梳不成中分。"
+	4 false "喂！谁管你头发怎样！再说你也从来没留过中分啊！"
+	4 true "算了，偶尔弄成爆炸头也不错。"
+	4 false "哪来的爆炸头！"
+CHATOFF
+
+CHATON 3
+	6 4 false
+	4 false "……"
+	6 true "……"
+	4 false "你的灵魂比刚才更加虚幻了，过不了几炷香时分，恐怕连形体都难以维持了吧……"
+	6 true "……"
+	4 false "到底是为了什么…现在那人已经对自己的存在产生了疑惑，你又何必再……"
+	6 true "……"
+	4 false "当一个人拥有不同的记忆时，将会是多么可怕的事情……"
+	6 true "……"
+	4 false "唉，看来在下对你说这些也是白搭……"
+	6 true "恒者，腐……"
+CHATOFF
+
+IF CHATI - 0xff !
+{
+	SETTIME 0
+	SETSCENE 328
+}
+
+////////////////
+# 328	//白血2
+
+@ 1
+
+BGSETUP 4 0x0390 true
+
+EB 0x0384 40
+	TX 40 TY 40 9000 5.0
+	40 160 300 0x00000000
+
+BOSSUP
+
+///////////////
+# 332	//PLRANGE火刑者的挽联
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0320 0xffff
+
+@ 1
+
+BGSETUP 0 0x0300 false
+BGSETUP 2 0x0304 false
+BGSETUP 4 0x0390 false
+BGSETUP 8 0x0320 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x0386 40
+	TX 40 TY 40 0 5.0
+	40 200 240 0x00000193
+
+BOSSUP
+
+/////////////
+# 336	//白血3
+
+@ 1
+
+EB 0x0388 40
+	TX 40 TY 40 9000 5.0
+	40 160 300 0x00000000
+
+BOSSUP
+
+////////////
+# 340	//PLRANGE京城礼花祭
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0320 0xffff
+
+@ 1
+
+BGSETUP 0 0x0300 false
+BGSETUP 2 0x0304 false
+BGSETUP 4 0x0390 false
+BGSETUP 8 0x0320 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x0390 40
+	TX 40 TY 40 0 5.0
+	40 220 240 0x00000193
+
+BOSSUP
+
+////////////
+# 344	//PLRANGE魔窟炼狱
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0320 0xffff
+
+@ 1
+
+BGSETUP 0 0x0300 false
+BGSETUP 2 0x0304 false
+BGSETUP 4 0x0390 false
+BGSETUP 8 0x0320 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x0392 40
+	TX 40 TY 40 0 5.0
+	40 220 240 0x00000000
+
+BOSSUP

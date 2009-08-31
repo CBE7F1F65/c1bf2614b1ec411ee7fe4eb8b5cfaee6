@@ -1,0 +1,264 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+STAGEFILE
+////////////////////
+# 402	//演示
+
+@ @@> 0
+
+EXECUTE CT_STAGE 400 TIME
+
+@ @@> 270
+
+SD [isWushuang] CHARA - 3 !
+IF CHATI - 0xff ! + isWushuang
+{
+	SETSCENE 406
+}
+
+/////////////
+# 406	//道中1
+
+@ 1
+
+BGSETUP 1 0x0402 true
+BGSETUP 4 0x0440 true
+
+@ 240
+
+BGSETUP 1 0 true
+
+@ @@[ 180
+
+CALL $ST3BTrap TIME
+
+//拉线
+@ @@[]% 400 1600 400
+
+EB 0x2400 0xff
+	TIME % 800 < 400 * 100 + 170 0 9000 2.0
+	1 5 300 0x00000152
+
+//拦截
+@ @@[]% 400 2000 120
+
+SD [bRight] TIME % 800 < 400 !
+SD [randX] RAND % 200 - 100
+EB 0x2402 0xff
+	bRight * 200 + 120 0 9000 5.0
+	0 5 80 0x00000042
+ENSAIM bRight 0
+
+//主攻
+@ 2000
+
+EB 0x2404 0xff
+	220 0 9000 2.5
+	3 20 360 0x000000A5
+
+//排列
+@ @@[]% 2600 2780 20
+
+EXECUTE CT_STAGE 404 TIME
+
+@ 3060
+
+SETTIME 0
+SETSCENE 410
+
+//////////////
+# 410	//白血1
+
+@ 1
+
+EB 0x2480 40
+	0 0 3500 5.0
+	40 180 300 0x00000000
+
+BOSSUP
+
+/////////////
+# 414	//对话1
+
+@ @@> 0
+
+EXECUTE CT_STAGE 412 TIME
+
+IF CHATI - 0xff !
+{
+	SETSCENE 418
+}
+
+//////////
+# 418	//CFRANGE一千零一夜
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0420 0xffff
+
+@ 1
+
+BGSETUP 0 0x0400 false
+BGSETUP 4 0x0440 false
+BGSETUP 8 0x0420 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x2482 40
+	TX 40 TY 40 0 5.0
+	40 200 240 0x00100094
+
+BOSSUP
+
+///////////////
+# 422	//道中2
+
+@ 1
+
+EB 0x0000 40
+	TX 40 TY 40 -4500 5.0
+	40 200 240 0x00000000
+
+@ @@[ 180
+
+CALL $ST3BTrap TIME
+
+//拉圈
+@ @@<% 1400 144
+
+SD [bRight] TIME / 144 % 2
+EB 0x2408 0xff
+	bRight * 440 120 bRight * 18000 4.0
+	1 2 90 0x00000062
+ENSAIM bRight 0
+
+//火雨
+@ 480
+
+EB 0x2410 0xff
+	220 0 9000 1.5
+	3 15 700 0x000011A4
+
+@ 1500
+
+SETTIME 0
+SETSCENE 426
+
+///////////////
+# 426	//对话2
+
+@ @@> 0
+
+EXECUTE CT_STAGE 424 TIME
+
+IF CHATI - 0xff !
+{
+	SETSCENE 430
+}
+
+////////////////
+# 430	//白血2
+
+@ 1
+
+BGSETUP 4 0x0490 true
+
+EB 0x2484 40
+	TX 40 TY 40 9000 5.0
+	40 160 300 0x00000000
+
+BOSSUP
+
+///////////////
+# 434	//CFRANGE水晶棺
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0420 0xffff
+
+@ 1
+
+BGSETUP 0 0x0400 false
+BGSETUP 4 0x0390 false
+BGSETUP 8 0x0420 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x2486 40
+	TX 40 TY 40 0 5.0
+	40 200 300 0x00000193
+
+BOSSUP
+
+/////////////
+# 438	//白血3
+
+@ 1
+
+EB 0x2488 40
+	TX 40 TY 40 9000 5.0
+	40 160 300 0x00000000
+
+BOSSUP
+
+////////////
+# 442	//CFRANGE七棱幻阵
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0420 0xffff
+
+@ 1
+
+BGSETUP 0 0x0400 false
+BGSETUP 4 0x0390 false
+BGSETUP 8 0x0420 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x2490 40
+	TX 40 TY 40 0 5.0
+	40 220 4096 0x00000193
+
+BOSSUP
+
+////////////
+# 446	//CFRANGE百花缭乱
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0420 0xffff
+
+@ 1
+
+BGSETUP 0 0x0400 false
+BGSETUP 4 0x0390 false
+BGSETUP 8 0x0420 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x2492 40
+	TX 40 TY 40 0 5.0
+	40 220 240 0x00000000
+
+BOSSUP

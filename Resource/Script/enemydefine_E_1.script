@@ -1,0 +1,458 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+EDEFFILE
+
+///////////////
+# 0x0000	//默认空
+
+@ 1
+
+//////////////
+# 0x0001	//BOSS对话
+
+@ 1
+
+EA 2 40
+	60
+
+//////////
+# 0x0100	//探子
+
+@ 1
+
+EA 4 4
+	120 990 -9000
+
+//////////
+# 0x0102	//带使魔小兵
+
+@ 1
+
+EA 5 7
+	80 965 160 9000
+
+@ 80
+
+GB 0x8100 0xff ENI
+	ENX ENY RANDA 2.0
+	0 2 40
+
+@ 120
+
+B ENX ENY
+	false 0 2.5
+	8 1 8 0 0xff
+
+/////////
+# 0x0104	//增援
+
+@ 1
+
+SD [bOnRight] ENX > 220
+EA 5 10
+	40 * SIGN bOnRight 220 320 180
+
+@ 40
+
+GB 0x8102 0xff ENI
+	ENX ENY -13500 2.0
+	0 2 30
+
+/////////
+//（AIMX携带使魔数量）
+# 0x0106	//主攻带使魔小兵
+
+@ 1
+
+SD [bOnRight] ENX > 220
+EA 5 7
+	120 965 180 18000 * bOnRight
+
+@ 40
+
+SD [i] ENAIMX
+LOOP [i]
+{
+	SD [nGhost] ENAIMX
+	GB 0x8104 0xff ENI
+		ENX ENY 36000 / nGhost * i 3.0
+		0 3 -45
+}
+
+@ @@% 80
+
+B ENX ENY
+	false 0 2.0
+	8 0 8 0	0xff
+
+///////////
+# 0x0108	//使魔延迟小兵
+
+@ 1
+
+EA 5 7
+	60 985 180 18000 - ENANGLE
+
+@ 40
+
+GB 0x8102 0xff ENI
+	ENX ENY 9000 3.0
+	0 3 60
+
+@ 60
+
+BC 4 true
+	ENX ENY 2.0
+	9 0 8 0
+
+@ 120
+
+GB 0x8102 0xff ENI
+	ENX ENY 9000 4.0
+	0 3 45
+
+///////////
+# 0x0110	//冲上型小兵
+
+@ 1
+
+EA 4 16
+	80 240 270
+
+@ 135
+
+A 6
+	EVERY ANGLESETADD ENAIMX * 40
+	EVERY SPEEDSETADD 5
+B ENX ENY
+	true 9000 1.0
+	9 0 8 0	0xff
+A 0
+
+////////////
+# 0x0140	//画五角星小兵
+//（发出使魔）
+
+@ 1
+
+EA 4 42
+	40 220 240
+	
+@ 60
+
+EA 4 42
+	40 275.6 68.8
+
+BEB ENX ENY
+	-7200 4.5 13 0
+	180 true true 540 0xff
+	
+@ 100
+
+EA 4 42
+	40 130 174.6
+
+BEB ENX ENY
+	14400 4.5 13 0
+	180 true true 500 0xff
+		
+@ 140
+
+EA 4 42
+	40 310 174.6
+	
+BEB ENX ENY
+	0 4.5 13 0
+	180 true true 460 0xff
+	
+@ 180
+
+EA 4 42
+	40 164.4  68.8
+
+BEB ENX ENY
+	-14400 4.5 13 0
+	180 true true 420 0xff
+	
+@ 220
+
+EA 4 42
+	40 220 200
+
+BEB ENX ENY
+	7200 4.5 13 0
+	180 true true 380 0xff
+
+@ 260
+
+EA 5 7
+	20 0 60 -9000
+
+@ @@]% 240 40
+
+GB 0x8140 0xff ENI
+	ENX ENY RANDA 2.0
+	0 2 40
+
+/////////
+# 0x0142	//五个角小兵
+//（AIMX标示五角星位置）
+
+@ 1
+
+EA 5 7
+	0 0 520 ENAIMX * -7200
+
+@ @@% 90
+
+SD [evenOffset] EN@ % 180 ! * 3600
+GB 0x8142 0xff ENI
+	ENX ENY ENAIMX * -7200 - evenOffset 1.2
+	0 4096 0
+GHSAIM ENAIMX 0
+
+////////
+# 0x0144	//创造型小兵
+//
+
+@ 1
+
+EA 5 7
+	90 995 360 -9000
+
+@ 35
+
+SD [i] 2
+LOOP [i]
+{
+	GB 0x8144 0xff ENI
+		ENX ENY i * 18000 4
+		0 20 85
+	GHSAIM i 0
+}
+
+@ @@>]% 90 320 5
+
+A 24
+	TIMERLESS 30 SPEEDSETADD -15
+	TIMERLESS 30 ANGLESETADD -60
+	TIMEREQUAL 30 SPEEDSET 0
+	TIMEREQUAL 120 ANGLESETADD 21000
+	TIMEREQUAL 120 TYPESET 5
+	TIMERGREAT 120 SPEEDSETADD 1
+	
+SD [i] 2
+LOOP [i]
+{
+	SD [oppositeAngle] i * 18000
+	B ENX ENY
+		true EN@ * 270 + oppositeAngle 7.0
+		8 i 8 0	0xff
+}
+	
+A 0
+
+///////////// BOSS /////////////////
+# 0x0180	//CW白血
+
+@ 1
+
+EA 2 40
+	60
+
+@ @@[]% 72 156 12
+
+SD [i] EN@ / 12 - 5
+SD [tAngle] i - 1 * 1000
+SD [angleOffset] 9000 - tAngle
+
+LOOP [i]
+{
+	SD [angle] i * 2000 + angleOffset
+	A 10
+		TIMERRANGE 60 120 ANGLESETADD 9000 - angle / 20
+		TIMERRANGE 60 120 SPEEDSETADD 2
+	B ENX ENY
+		true angle 1.0
+		8 3 8 0	0xff
+}
+A 0
+
+@ 160
+
+EA 4 42
+	60 120 280
+
+@ @@[]% 225 390 15
+
+SD [timeLess] EN@ < 280
+SD [timeOver] EN@ > 340
+IF timeLess + timeOver
+{
+	A 8
+		TIMERLESS 120 ANGLESETADD SIGN timeLess * 400
+		TIMERLESS 120 SPEEDSETADD 1
+	BC 8 true
+		ENX ENY 1.0
+		0 4 8 0
+	A 0
+}
+
+@ 280
+
+EA 4 42
+	60 320 280
+
+@ 400
+
+EA 2 40
+	60
+
+@ 480
+
+SD [i] 4
+LOOP [i]
+{
+	GB 0x8106 0xff ENI
+		ENX ENY 9000 * i 3.0
+		0 5 80
+}
+
+//////////
+# 0x0182	//CWRANGE瓮中之鳖
+
+@ 1
+
+EA 2 40
+	60
+
+@ 120
+
+EA 4 42
+	60 220 240
+
+@ @@[] 180 183
+
+SD [index] EN@ - 180
+GB 0x8108 index ENI
+	ENX ENY 9000 * index 1.0
+	0 20 160
+GHSAIM index 0
+
+///////////
+# 0x0184	//FX白血1
+
+@ 1
+
+EA 5 41
+	60 220 120 360
+	
+@ @@% 360
+
+BC 8 false
+	ENX ENY 1.5
+	9 5 16 0
+
+@ 60
+
+SD [_0] 0
+A 7
+	TIMERLESS 60 SPEEDSETADD -5
+	TIMEREQUAL 60 FADEOUT
+B ENX ENY
+	false 0 3.0
+	40 0 16 0	_0
+A 0
+
+@ 120
+
+SD [randAngle] RANDA
+SD [i] 4
+LOOP [i]
+{
+	SD [angleOffset] 9000 * i + randAngle
+	GB 0x8146 0xff 0xff
+		TX _0 TY _0 angleOffset 1.0
+		0 20 2400
+	GHSAIM GHI 0
+}
+
+////////////
+# 0x0186	//FXRANGE匿迹的虞书
+
+@ 1
+
+EA 2 40
+	60
+
+@ 120
+
+EA 5 41
+	60 ENX ENY 120
+
+SD [i] 8
+LOOP [i]
+{
+	GB 0x8148 0xff ENI
+		ENX ENY i * 4500 1.5
+		0 20 120
+}
+
+////////////
+# 0x0188	//FX白血2
+
+@ 1
+
+EA 2 40
+	60
+
+@ 60
+
+SD [angleBase] ENAMAP 0
+SD [i] 3
+LOOP [i]
+{
+	GB 0x8150 0xff ENI
+		ENX ENY i - 1 * 6000 + angleBase 1.0
+		0 15 0
+	GHSAIM i - 1 * 6000 0
+}
+
+@ 240
+
+EA 5 41
+	60 ENX ENY 120
+	
+@ @@>%<% 360 120 60 10
+
+SD [bPlus] EN@ / 120
+SD [bPlus] SIGN bPlus * 800
+A 5
+	TIMERRANGE 60 80 ANGLESETADD bPlus
+BC 15 false
+	ENX ENY 1.5
+	9 2 8 0
+A 0
+
+////////////
+# 0x0190	//FXRANGE异想天开
+
+@ 1
+
+EA 2 40
+	60
+	
+@ 120
+
+SD [randAngle] RANDA
+SD [i] 6
+LOOP [i]
+{
+	SD [angle] i > 2 * 18000
+	SD [angle] i * 12000 + angle + randAngle
+	GB 0x8152 0xff ENI
+		COSA angle *f 80.0 +f ENX SINA angle *f 80.0 +f ENY angle 0.0
+		0 40 80
+	SD [aimAngle] angle + 15000
+	GHSAIM COSA aimAngle SINA aimAngle
+}

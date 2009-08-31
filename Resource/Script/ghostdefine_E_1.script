@@ -1,0 +1,400 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+EDEFFILE
+
+//////////
+# 0x8000	//空
+
+@ 1
+
+//////////
+# 0x8001	//空
+
+@ 1
+
+//////////
+# 0x8100	//环绕使魔0
+
+@ @@]% 120 40
+
+SD [i] 2
+LOOP [i]
+{
+	B GHX GHY
+		true i * 18000 1.5
+		2 1 8 0	0xff
+}
+
+//////////
+# 0x8101	//环绕使魔1
+
+@ @@]% 120 60
+
+B GHX GHY
+	false 0 2.0
+	2 0 8 0	0xff
+
+//////////
+# 0x8102	//增援使魔0
+
+@ 1
+
+//////////
+# 0x8103	//增援使魔1
+
+@ @@]% 120 60
+
+B GHX GHY
+	false 0 2.0
+	9 0 8 0	0xff
+
+//////////
+# 0x8104	//主攻使魔0
+
+@ @@% 60
+
+B GHX GHY
+	true GHANGLE 1.5
+	9 1 8 0 0xff
+
+//////////
+# 0x8105	//主攻使魔1
+
+@ @@[%] 60 60 3
+
+A 8
+	TIMEREQUAL 60 SPEEDSET 200
+	TIMEREQUAL 60 ANGLESETAMAP 0
+
+B GHX GHY
+	true 0 0.0
+	9 0 8 0	0xff
+
+A 0
+
+/////////
+# 0x8106	//CW白血使魔0
+
+@ @@% 30
+
+SD [i] 4
+LOOP [i]
+{
+	B GHX GHY
+		true i * 9000 + GHANGLE 2.0
+		3 i / 2 + 3 24 0 0xff
+}
+
+//////////
+# 0x8107	//CW白血使魔1
+
+@ @@% 20
+
+SD [i] 4
+LOOP [i]
+{
+	B GHX GHY
+		true i * 1000 + GHANGLE i *f 0.6 +f 1.0
+		3 i / 2 24 0 0xff
+}
+
+//////////
+# 0x8108	//CWRANGE瓮中之鳖使魔0
+//（AIMX序列编号）
+
+@ @@> 120
+
+SD [tGhAc] GH@ - 120 / 36
+SD [ghAc] 160 - tGhAc
+GHSET ROLL GH@ 60 /f -20.0 GHANGLE ghAc
+
+@ @@>% 120 10
+
+SD [i] 3
+LOOP [i]
+{
+	B GHX GHY
+		true i * 800 + GHANGLE + 9000 i *f 0.8 +f 0.8
+		i / 2 + 2 2 + i 16 0 0xff
+}
+
+@ @@% 120
+
+B GHX GHY
+	true GHANGLE + 18000 1.0
+	32 1 16 0	0xff
+
+//////////
+# 0x8109	//CWRANGE瓮中之鳖使魔1
+//（AIMX序列编号）
+
+@ @@> 120
+
+SD [tGhAc] GH@ - 120 / 30
+SD [ghAc] 160 - tGhAc
+GHSET ROLL GH@ 60 /f 20.0 GHANGLE ghAc
+
+@ @@>% 120 5
+
+SD [i] 3
+LOOP [i]
+{
+	B GHX GHY
+		true i * 800 + GHANGLE + 9000 i *f 0.8 +f 0.8
+		i / 2 + 2 2 + i 16 0 0xff
+}
+
+@ @@[% 180 90
+
+B GHX GHY
+	true GH@ / 90 % 2 * 4500 + GHANGLE + 13500 1.5
+	32 0 16 0	0xff
+
+////////////////////
+# 0x8140	//画五角星使魔0
+
+@ @@% 15
+
+A 9
+	TIMERLESS 28 SPEEDSETADD -36
+	TIMERRANGE 40 90 ANGLESETADD SIGN GH@ * -300
+
+B GHX GHY
+	true GHANGLE 9.0
+	35 2 8 8 0xff
+A 0
+
+////////////////////
+# 0x8141	//画五角星使魔1
+
+@ @@% 20
+
+A 4
+	TIMERLESS 28 SPEEDSETADD -6
+
+SD [i] 2
+LOOP [i]
+{
+	B GHX GHY
+		true i * 18000 + GHANGLE i *f 1.0 + 2.8
+		35 i % 2 8 32	0xff
+}
+
+A 0
+
+////////////////////
+# 0x8142	//五个角使魔0
+//（AIMX表示左上0或者右下1）
+
+@ @@]% 120 24
+
+B GHX GHY
+	true GH@ * 270 + GHANGLE / 2000 * 2000 1.0
+	11 GHAIMX 8 8	0xff
+
+/////////////////////
+# 0x8143	//五个角使魔1
+
+@ @@]% 150 10
+
+B GHX GHY
+	true GH@ * 270 + GHANGLE / 6000 * 6000 1.0
+	11 GHAIMX 8 8	0xff
+
+/////////////////////
+# 0x8144	//创造型使魔0
+
+@ 1
+
+////////////////////
+# 0x8145	//创造型使魔1
+
+@ @@>]% 90 320 5
+
+A 16
+	TIMEREQUAL 30 SPEEDSET 0
+	TIMEREQUAL 120 ANGLESETADD 21000
+	TIMEREQUAL 120 TYPESET 5
+	TIMERGREAT 120 SPEEDSETADD 1
+
+B GHX -f TX _0 +f PX GHY -f TY _0 +f PY
+	false 0 1.0
+	8 GHAIMX 8 0 0xff
+
+A 0
+
+///////////////////
+# 0x8146	//FX白血1使魔0
+
+@ @@> 0
+
+CALL $GHX146Move GH@
+
+@ @@%<%<% 360 240 60 40 4
+
+B GHX GHY
+	true GHANGLE * -1 1.5
+	9 1 8 0	0xff
+
+//////////////////
+# 0x8147	//FX白血1使魔1
+
+@ @@> 0
+
+CALL $GHX146Move GH@
+
+@ @@%<%<% 360 240 60 50 6
+
+B GHX GHY
+	true GHANGLE + 18000 1.5
+	9 0 8 0	0xff
+
+////////////////////
+# 0x8148	//FXRANGE匿迹的虞书使魔0
+
+@ @@% 10
+
+GHSET GHSPEED GHANGLE ROLL GH@ 120
+
+SD [uniTimer] GH@ % 240
+IF uniTimer > 120
+{
+	A 11
+		VALEQUAL [uniTimer] 60 SPEEDSET 200
+		VALRANGE [uniTimer] 60 120 SPEEDSETADD -3
+	B GHX GHY
+		true GHANGLE + 18000 2.5
+		GHI % 2 + 8 1 8 0	0xff
+}
+A 0
+
+////////////////////
+# 0x8149	//FXRANGE匿迹的虞书使魔1
+
+@ @@% 10
+
+GHSET GHSPEED GHANGLE ROLL GH@ 120
+
+SD [uniTimer] GH@ % 240
+IF uniTimer > 120
+{
+	A 11
+		VALEQUAL [uniTimer] 60 SPEEDSET 200
+		VALRANGE [uniTimer] 60 120 SPEEDSETADD -3
+	B GHX GHY
+		true GHANGLE 0.0
+		BUI % 2 + 8 0 8 0	0xff
+}
+A 0
+
+////////////////////
+# 0x8150	//FX白血2使魔0
+
+@ @@]% 240 60
+
+A 12
+	TIMERLESS 60 SPEEDSETADD -1
+	TIMEREQUAL 120 SPEEDSET 200
+	TIMEREQUAL 120 ANGLESETAMAP 0
+
+BC 9 false
+	GHX GHY 0.75
+	3 1 8 0
+
+A 0
+
+////////////////////
+# 0x8151	//FX白血2使魔1
+
+@ @@%<% 80 64 15
+
+A 4
+	TIMEREQUAL 240 SPEEDSET 100
+B GHX GHY
+	true GH@ * 18000 + GHAIMX 0.05
+	2 0 8 0 0xff
+A 0
+
+////////////////////
+# 0x8152	//FXRANGE异想天开使魔0
+
+@ 160
+
+GHSET 1.5 GHANGLE 80
+
+@ @@%] 750 35
+
+SD [timer] GH@ % 750
+A 14
+	TIMEREQUAL 120 SPEEDSET 120
+	TIMERRANGE 160 200 ANGLESETADD -500
+	TIMERRANGE 240 260 SPEEDSETADD timer / 4
+B timer * 4 *f GHAIMX +f GHX timer * 4 *f GHAIMY +f GHY
+	true GH@ % 2 * 18000 + GHANGLE 0.0
+	8 1 8 0 0xff
+A 0
+
+@ @@%>] 750 240 280
+
+SD [timer] GH@ % 750
+A 14
+	TIMEREQUAL 120 SPEEDSET 80
+	TIMERRANGE 160 200 ANGLESETADD 400
+	TIMERRANGE 240 260 SPEEDSETADD timer % 6
+B timer - 240 *f GHAIMX +f GHX timer - 240 *f GHAIMY +f GHY
+	true GH@ % 3 * 12000 + GHANGLE 0.0
+	11 2 8 0 0xff
+A 0
+
+@ @@%>]%< 750 480 520 4 3
+
+SD [timer] GH@ % 750
+A 9
+	TIMEREQUAL 120 SPEEDSET timer - 400
+	TIMERRANGE 160 200 ANGLESETADD -200
+B timer - 480 *f GHAIMX +f GHX timer - 480 *f GHAIMY +f GHY
+	true GH@ % 4 * 9000 + GHANGLE 0.0
+	10 5 8 0 0xff
+A 0
+
+////////////////////
+# 0x8153	//FXRANGE异想天开使魔1
+
+@ 160
+
+GHSET 1.5 GHANGLE 80
+
+@ @@%] 750 35
+
+SD [timer] GH@ % 750
+A 14
+	TIMEREQUAL 120 SPEEDSET 80
+	TIMERRANGE 160 200 ANGLESETADD SIGN timer * 500
+	TIMERRANGE 240 260 SPEEDSETADD timer / 4
+B timer * 4 *f GHAIMX +f GHX timer * 4 *f GHAIMY +f GHY
+	true GH@ % 3 * 15000 + GHANGLE 0.0
+	9 0 8 0 0xff
+A 0
+
+@ @@%>] 750 240 280
+
+SD [timer] GH@ % 750
+A 14
+	TIMEREQUAL 120 SPEEDSET 150
+	TIMERRANGE 160 200 ANGLESETADD SIGN timer * 450
+	TIMERRANGE 240 250 SPEEDSETADD timer % 6
+B timer - 240 *f GHAIMX +f GHX timer - 240 *f GHAIMY +f GHY
+	true GH@ % 5 * 12000 + GHANGLE 0.0
+	11 3 8 0 0xff
+A 0
+
+@ @@%>]%< 750 480 540 4 3
+
+SD [timer] GH@ % 750
+A 9
+	TIMEREQUAL 120 SPEEDSET timer - 400
+	TIMERRANGE 160 200 ANGLESETADD SIGN timer * -200
+B timer - 480 *f GHAIMX +f GHX timer - 480 *f GHAIMY +f GHY
+	true GH@ % 8 * 4500 + GHANGLE 0.0
+	10 6 8 0 0xff
+A 0

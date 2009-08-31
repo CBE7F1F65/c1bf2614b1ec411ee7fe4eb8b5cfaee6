@@ -1,0 +1,522 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+EDEFFILE
+
+/////////////////////
+# 0x1200	//Ðý×ªÐ¡±ø
+
+@ 1
+
+SD [bRight] ENAIMX
+EA 5 10
+	SIGN bRight * 60 220 100 220
+
+IF ENAIMY
+{
+	GB 0x9200 0xff ENI
+		ENX ENY RANDA 2.5
+		0 1 30
+}
+
+@ 220
+
+EA 5 7
+	0 0 260 9000
+
+////////////////////////
+# 0x1202	//Ö¸ÏòÉ¢ÉäÐ¡±ø
+
+@ 1
+
+EA 5 7
+	120 988 60 -9000
+
+@ @@% 80
+
+BC 12 false
+	ENX ENY 1.8
+	8 1 8 0
+
+@ @@%[]% 120 40 90 2
+
+B ENX ENY
+	false RANDR 30 3.0
+	8 0 8 0 0xff
+
+/////////////////////////
+# 0x1204	//ÂýËÙÉ¢ÉäÐ¡±ø
+
+@ 1
+
+GB 0x9202 0xff ENI
+	ENX ENY RANDA 3.0
+	0 5 30
+
+@ 90
+
+BC 15 true
+	ENX ENY 1.0
+	9 7 8 0
+
+/////////////////////////
+# 0x1206	//ÓðÒíÐ¡±ø
+
+@ 1
+
+EA 5 7
+	120 988 300 9000
+
+@ 60
+
+ENSAIM PX PY
+
+@ @@[]% 60 240 6
+
+RAMA false
+	ENX ENY ENAIMX ENAIMY 0 [angle]
+
+SD [i] 3
+LOOP [i]
+{
+	B ENX ENY
+		true i - 1 * EN@ * 350 + angle 2.5
+		8 i % 2 8 0 0xff
+}
+
+////////////////////////
+# 0x1208	//Ö÷¹¥Ð¡±ø
+
+@ 1
+
+EA 4 42
+	80 220 180
+
+@ 60
+
+SD [i] 5
+LOOP [i]
+{
+	GB 0x8208 0xff ENI
+		ENX ENY i * 7200 -5.0
+		0 5 80
+}
+
+@ @@% 90
+
+SD [i] 12
+SD [angleBase] ENAMAP 0
+LOOP [i]
+{
+	B ENX ENY
+		true angleBase i *f 0.1 +f 1.0
+		14 1 8 0 0xff
+}
+
+@ 480
+
+EA 5 7
+	0 0 0 -9000
+
+//////////////////////
+# 0x1210	//×¦×ÓÐ¡±ø
+
+@ 1
+
+EA 5 7
+	60 984 240 ENAMAP 0
+
+@ 60
+
+GB 0x9210 0xff 0xff
+	ENX ENY 9000 1.5
+	0 5 240
+
+@ 120
+
+BC 12 true
+	ENX ENY 2.0
+	9 0 8 0
+
+//////////////////////
+# 0x1212	//ÈÅÂÒÐ¡±ø
+
+@ 1
+
+EA 4 4
+	160 984 -9000
+
+@ @@% 80
+
+SD [i] 3
+SD [angleBase] ENAMAP -3000
+LOOP [i]
+{
+	B ENX ENY
+		true i * 3000 + angleBase 2.0
+		8 0 8 0 0xff
+}
+
+///////////////////////
+# 0x1214	//·½¿éÐ¡±ø
+
+@ 1
+
+EA 5 7
+	60 982 480 -9000
+
+SD [_0] 0
+
+@ @@[]% 60 180 10
+
+SDf [yPos] EN@ * 2 - 240 +f ENY
+SD [i] 13
+A 5
+	VALEQUAL [_0] 1 SPEEDSET 160
+LOOP [i]
+{
+	SDf [xPos] i * 20 - 120 +f ENX
+	RAMA false
+		xPos yPos ENX ENY ENAIMX [angle]
+	B xPos yPos
+		true angle + 18000 0.0
+		32 ENAIMY + 5 16 0 0xff
+	B xPos yPos
+		true angle 0.0
+		5 ENAIMY + 6 16 0 0xff
+}
+A 0
+
+@ 240
+
+SD [_0] 1
+
+SD [i] 4
+LOOP [i]
+{
+	GB 0x9212 0xff ENI
+		ENX ENY i * 9000 ENAIMY *f 3.5
+		0 15 60
+}
+
+@ 241
+
+SD [_0] 0
+
+///////////// BOSS /////////////////
+
+/////////////////////////
+# 0x1284	//BOSS¶Ô¾ö2BA
+
+@ 1
+
+EA 4 42
+	40 60 80
+
+@ 130
+
+SD [i] 3
+SD [angleBase] ENAMAP -1500
+LOOP [i]
+{
+	GB 0x8204 0xff 0xff
+		ENX ENY i * 1500 + angleBase 2.5
+		0 8 240
+}
+
+@ 170
+
+EA 4 42
+	60 360 -40
+
+//////////////////////////
+# 0x1286	//BOSS¶Ô¾ö2BX
+
+@ 1
+
+EA 4 42
+	40 160 240
+
+@ 40
+
+SD [randAngle] RANDA
+SD [i] 8
+LOOP [i]
+{
+	GB 0x8206 0xff 0xff
+		ENX ENY i * 4500 + randAngle 2.0
+		0 3 240
+}
+
+@ 120
+
+EA 4 42
+	40 290 280
+
+@ 160
+
+EA 4 42
+	60 360 -40
+
+//////////////////////
+# 0x1288	//BX°×ÑªBX
+
+@ 1
+
+EA 4 42
+	60 220 200
+
+@ 60
+
+SD [i] 5
+LOOP [i]
+{
+	GB 0x9214 0xff ENI
+		ENX ENY i * 7200 2.0
+		0 20 70
+}
+
+@ @@% 120
+
+BC 24 false
+	ENX ENY 1.0
+	9 7 16 0
+
+//////////////////////
+# 0x1290	//BX°×ÑªBA
+
+@ @@%= 120 1
+
+EA 4 42
+	60 RAND % 300 + 70 RAND % 60 + 90
+
+@ @@%<% 120 60 5
+
+B ENX ENY
+	false 0 5.0
+	9 0 8 0 0xff
+
+//////////////////////
+# 0x1292	//BXRANGEÐþÎäÐé±®»Ã½£ÕóBX
+
+@ 1
+
+EA 4 42
+	60 220 200
+
+@ @@[]% 60 80 3
+
+BC 24 false
+	ENX ENY 3.0
+	9 0 8 0
+
+@ @@[ 90
+
+EXECUTE CT_EDEF 0x0292 EN@
+
+@ @@>%]% 180 240 12 2
+
+A 8
+	TIMEREQUAL 90 FADEOUT
+	TIMEREQUAL 90 CALLSCRIPT $ENX292Bullet 1
+B RAND % 400 + 20 360
+	true RAND % 2000 - 10000 4.8
+	35 RAND % 8 16 0 0xff
+A 0
+
+@ @@% 120
+
+BC 15 false
+	ENX ENY 2.0
+	9 0 8 0
+
+///////////////////////
+# 0x1294	//BXRANGEÐþÎäÐé±®»Ã½£ÕóBA
+
+@ 1
+
+EA 4 42
+	60 40 60
+
+@ @@>%= 180 240 70
+
+EA 4 42
+	60 440 -f ENX 60
+
+@ @@% 240
+
+SD [i] 7
+SD [angleBase] ENAMAP -2400
+LOOP [i]
+{
+	B ENX ENY
+		true i * 800 + angleBase 3.0
+		9 0 8 0 0xff
+}
+
+////////////////////////
+# 0x1296	//BA°×Ñª1BA
+
+@ 1
+
+EA 5 41
+	60 PX 120 60
+
+@ 15
+
+SD [_0] 0
+GB 0x9216 _0 ENI
+	ENX ENY 0 0.0
+	0 80 0
+
+@ 45
+
+SD [_1] 1
+GB 0x9216 _1 ENI
+	ENX ENY 0 0.0
+	0 80 0
+
+@ @@>%[] 120 120 71 75
+
+EXECUTE CT_EDEF 0x0296 EN@ - 15
+
+@ @@>%[] 120 120 41 45
+
+EXECUTE CT_EDEF 0x0296 EN@ + 15
+
+/////////////////////////
+# 0x1298	//BA°×Ñª1BX
+
+@ 1
+
+EA 4 42
+	60 220 200
+
+@ @@% 60
+
+SD [bRight] TX _0 < 220
+EA 4 42
+	120 bRight * 360 + 40 RAND % 120 + 100
+
+@ @@>+%>% 60 15 120 60 3
+
+A 8
+	TIMERGREAT 0 CHASE _0 30
+	TIMEREQUAL 60 FADEOUT
+B ENX ENY
+	true 0 0.0
+	10 1 16 0 0xff
+A 0
+
+@ @@>+%>% 60 75 120 60 3
+
+A 8
+	TIMERGREAT 0 CHASE _1 30
+	TIMEREQUAL 60 FADEOUT
+B ENX ENY
+	true 0 0.0
+	10 1 16 0 0xff
+A 0
+
+/////////////////////////
+# 0x12A0	//BARANGE°×»¢ÌÃÉÈÁÁµ¶ÕóBA
+
+@ 1
+
+EA 4 42
+	60 220 300
+
+@ 60
+
+SD [_0] 0
+GB 0x9218 _0 ENI
+	ENX ENY 0 0.0
+	0 100 0
+SD [i] 2
+LOOP [i]
+{
+	GB 0x8000 0xff ENI
+		SIGN i * 30 +f ENX -15 +f ENY 0 0.0
+		0 4096 0
+}
+
+@ @@[ 150
+
+EXECUTE CT_EDEF 0x02A0 EN@
+
+///////////////////
+# 0x12A4	//BX°×Ñª2BX
+
+@ 1
+
+EA 5 41
+	60 160 120 90
+
+@ 60
+
+SD [i] 2
+LOOP [i]
+{
+	GB 0x9220 0xff ENI
+		ENX ENY i * 18000 3.0
+		0 50 45
+}
+
+//////////////////
+# 0x12A6	//BX°×Ñª2BA
+
+@ 1
+
+EA 5 41
+	60 280 120 60
+
+@ 60
+
+SD [i] 2
+LOOP [i]
+{
+	GB 0x9222 0xff ENI
+		ENX ENY i * 18000 -5.0
+		0 50 45
+}
+
+//////////////////
+# 0x12B2	//BXRANGE³ÁÓãÂäÑãBX
+
+@ 1
+
+EA 4 42
+	60 220 100
+
+@ @@[]% 60 120 10
+
+BC 24 false
+	ENX ENY 1.5
+	9 6 8 0
+
+@ @@[]% 90 150 10
+
+SD [index] EN@ / 10 + 1 % 7
+GB 0x8224 0xff ENI
+	50 * index + 70 SIGN index * 20 + 140 0 0.0
+	0 50 0
+GHSAIM index % 2 0
+	
+//////////////////
+# 0x12B6	//BARANGE²ÝÄ¾½Ô±øBA
+
+@ 1
+
+EA 4 42
+	60 220 240
+
+@ 60
+
+SD [i] 7
+SD [angleBase] RANDA
+LOOP [i]
+{
+	GB 0x9226 i ENI
+		ENX ENY i * 5143 + angleBase 3.0
+		0 1 180
+	GHSAIM i 0
+}

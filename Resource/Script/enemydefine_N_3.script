@@ -1,0 +1,341 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+EDEFFILE
+
+//////////
+# 0x1300	//拉线小兵
+
+@ 1
+
+EA 5 7
+	90 995 360 9000
+
+@ @@[]% 90 360 90
+
+GB 0x9302 0xff 0xff
+	ENX ENY 9000 2.0
+	0 10 200
+
+BC 12 false
+	ENX ENY 2.0
+	9 0 8 0
+
+/////////
+# 0x1302	//拦截小兵
+
+@ 1
+
+EA 4 4
+	120 984 -9000
+
+@ @@[]% 30 45 3
+
+BC 20 false
+	ENX ENY EN@ /f 18.0
+	12 2 8 0
+
+SD [angleBase] ENAMAP 0 - 1000
+SD [i] 3
+LOOP [i]
+{
+	B ENX ENY
+		true i * 1000 + angleBase EN@ /f 25.0
+		12 0 8 0 0xff
+}
+
+//////////
+# 0x1304	//主攻小兵
+
+@ 1
+
+EA 5 7
+	90 985 420 9000
+
+@ @@[] 60 64
+
+GB 0x9304 0xff ENI
+	ENX ENY EN@ * 7200 - SEED SIGN EN@ *f 3.5
+	0 20 100
+
+@ @@[]%] 90 360 60 12
+
+A 8
+	TIMERLESS 60 SPEEDSETADD -5
+	TIMEREQUAL 60 ANGLESETRMAP SIGN EN@ * 85
+B ENX ENY
+	true EN@ * 3000 4.0
+	32 2 16 0 0xff
+A 0
+
+//////////////
+# 0x1306	//排列小兵
+
+@ 1
+
+EA 4 16
+	60 120 180
+
+@ 60
+
+A 3
+	TIMEREQUAL 120 FADEOUT
+BC 24 false
+	ENX ENY 1.5
+	9 0 8 0
+A 0
+
+@ @@[]% 60 120 2
+
+B ENX ENY
+	true RAND % 500 + 8750 RAND % 5 /f 2.0 +f 1.0
+	8 0 8 0 0xff
+
+//////////////
+# 0x1308	//拉圈小兵
+
+@ 100
+
+EA 4 4
+	240 994 9000
+
+@ @@]% 100 8
+
+A 9
+	TIMEREQUAL 30 ANGLESETADD 18000
+	TIMERRANGE 30 90 SPEEDSETADD 8
+BC 15 false
+	ENX ENY -3.0
+	9 0 8 0
+A 0
+
+///////////////
+# 0x1310	//火雨小兵
+
+@ @@[< 120 960
+
+EA 4 42
+	30 PX 120
+
+@ 960
+
+EA 4 42
+	120 220 -400
+
+@ 60
+
+SD [i] 4
+LOOP [i]
+{
+	GB 0x9310 0xff ENI
+		ENX ENY i * 4000 - SEED 3.5
+		0 20 60
+}
+
+/////////////BOSS/////////////
+
+/////////
+# 0x1380	//白血1
+
+@ 1
+
+EA 4 42
+	60 220 240
+
+@ @@>% 60 5
+
+A 29
+	TIMEREQUAL 165 CALLSCRIPT $ENX380Bullet 250
+	TIMEREQUAL 30 SPEEDSET 0
+	TIMEREQUAL 45 SPEEDSET 250
+	TIMEREQUAL 45 ANGLESETADD 9000 
+	TIMEREQUAL 90 SPEEDSET 0
+	TIMEREQUAL 105 SPEEDSET 250
+	TIMEREQUAL 105 ANGLESETADD 9000
+
+SD [i] 5
+LOOP [i]
+{
+	B ENX ENY
+		true i * 180 + EN@ * 40 - SEED 2.0
+		9 0 8 0 0xff
+}
+
+A 0
+
+@ 300
+
+SD [randAngle] RANDA
+SD [i] 5
+LOOP [i]
+{
+	GB 0x8306 0xff ENI
+		ENX ENY i * 7200 + randAngle -1.8
+		0 15 200
+}
+
+////////////
+# 0x1382	//PLRANGEOhMyGod
+
+@ 1
+
+EA 5 41
+	120 220 120 120
+
+@ 90
+
+SD [i] 6
+A 4
+	EVERY BOUNCE 40 4096
+LOOP [i]
+{
+	GB 0x9308 0xff ENI
+		ENX ENY i * 6000 0.8
+		0 40 80
+	B ENX ENY
+		true RANDA 1.6
+		40 0 16 0 i
+	BUDECANCEL BUI
+}
+A 0
+
+/////////////
+# 0x1384	//白血2
+
+@ 1
+
+EA 5 41
+	60 220 120 40
+
+@ @@[]% 80 94 2
+
+SD [angle] EN@ - 80 / 2 * 4500
+SDf [cosA] COSA angle
+SDf [sinA] SINA angle
+GB 0x9312 0xff ENI
+	60 *f cosA +f ENX 60 *f sinA +f ENY angle 0.0
+	0 30 60
+
+////////////
+# 0x1386	//PLRANGE火刑者的挽联
+
+@ 1
+
+EA 4 42
+	60 220 160
+
+@ 60
+
+GB 0x8316 0xff ENI
+	ENX ENY - 90 -9000 0.0
+	0 2 90
+
+@ @@>%]% 120 240 120 30
+
+SD [i] 2
+LOOP [i]
+{
+	SD [xRand] RAND % 60
+	GB 0x9314 0xff 0xff
+		i * 320 + xRand + 30 480 -9000 2.1
+		0 4096 240
+}
+
+@ @@%= 240 120
+
+SD [_0] EN@ / 240 % 2
+A 4
+	TIMEREQUAL 120 SPEEDSET 500
+B ENX ENY
+	true 9000 0.0
+	40 0 16 0 _0
+BUDECANCEL BUI
+A 0
+
+///////////////
+# 0x1388	//白血3
+
+@ 1
+
+EA 5 41
+	60 220 120 60
+
+@ @@[]% 80 94 2
+
+GB 0x9312 0xff ENI
+	ENX ENY EN@ - 80 / 2 * 1200 1.0
+	0 30 60
+
+//////////////
+# 0x1390	//PLRANGE京城礼花祭
+
+@ 1
+
+EA 5 41
+	60 220 120 360
+
+@ @@>% 60 3
+
+B ENX ENY
+	true EN@ * 240 + SEED 1.5
+	13 2 8 0 0xff
+
+@ @@%= 360 120
+
+SD [randVal] RAND % 30
+SD [i] 4
+LOOP [i]
+{
+	SD [xOff] SIGN i * randVal
+	SD [x] i * 100 + xOff + 70
+	BEB ENX ENY 9000 0.05
+		13 2 128
+		true true 120 0xff
+	BEVECTOR BEI
+		ENX ENY x 480
+	GB 0x9318 0xff 0xff
+		x 460 9000 0.0
+		0 4096 120
+}
+
+//////////////
+# 0x1392	//PLRANGE魔窟炼狱
+
+@ 1
+
+EA 5 41
+	60 220 120 120
+
+@ @@[] 60 90
+
+SD [xPos] EN@ % 2 * 360 + 40
+RAMA false
+	ENX ENY xPos 40 0 [angle]
+B ENX ENY
+	true angle 5.0
+	2 0 8 0 0xff
+
+IF EN@ > 88
+{
+	GB 0x9322 0xff 0xff
+		xPos 40 0 0.0
+		0 4096 4096
+}
+
+@ 120
+
+SD [i] 4
+LOOP [i]
+{
+	GB 0x9320 0xff ENI
+		ENX ENY i * 9000 0.0
+		0 40 90
+}
+
+@ @@>% 120 75
+
+A 4
+	TIMERLESS 90 SPEEDSETADD -5
+BC 20 false
+	ENX ENY 5.0
+	9 7 8 0
+A 0

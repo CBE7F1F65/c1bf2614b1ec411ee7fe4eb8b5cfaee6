@@ -1,0 +1,647 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+SCENEFILE
+
+///////////////////
+# 0x0100	//第一关道中
+
+@ 0
+
+BGOFF 0
+BGOFF 1
+BGOFF 15
+BGOFF 16
+
+@ 1
+
+//覆盖层
+BGVALUE 16 1
+	220 240 440 480
+	1 1 1 1
+	0xff000000
+BGCOLOR 16
+	0xc0000000
+	0xc0000000
+	0x00000000
+	0x00000000
+BGFLAG 16 1
+
+//场景层
+BGVALEX 0 61
+	-140 -100 0 640 600
+	800 0 0 60
+	0 0 1 1
+	0.008 9000 0 0
+	0xffffffff
+//云彩层
+BGVALEX 1 62
+	0 0 0 440 480
+	0 0 0 0
+	0 0 1 1
+	0.004 13500 0 0
+	0x80ffffff
+//标题文字层
+IF MODE - 3
+{
+	BGVALUE 15 60
+		220 240 256 256
+		1 1 1 1
+		0x0
+	BGFLAG 15 BG_LIGHTUP
+}
+
+@ 160
+//标题文字淡出
+IF MODE - 3
+{
+	BGFLAG 15 BG_FADEOUT
+}
+
+@ 240
+//标题文字消失
+BGOFF 15
+
+
+@ @@] 240
+//进入场景引子
+BGZ 0 BGS@ * -1 / 3 D 1 D 1 * 4 + 320 D 3
+
+//////////
+# 0x0120	//CWRANGE
+
+@ 0
+
+BGOFF 8
+
+@ 1
+
+BGVALEX 8 100
+	0 0 0 440 480
+	0 0 0 0
+	0 0 1 1
+	0.008 -9000 false false
+	0x00ffffff
+BGFLAG 8 BG_LIGHTUP
+
+@ 0xffff
+
+BGFLAG 8 BG_FADEOUT
+
+/////////
+# 0x0130	//FXRANGE
+
+@ 0
+
+BGOFF 8
+
+@ 1
+
+BGVALEX 8 100
+	0 0 0 440 480
+	0 0 0 0
+	0 0 1 1
+	0.008 -9000 false false
+	0x00ffffff
+BGFLAG 8 BG_LIGHTUP
+
+@ 0xffff
+
+BGFLAG 8 BG_FADEOUT
+
+//////////
+# 0x0140	//第一关音乐开始
+
+@ 0
+
+@ 1
+
+MUSICCHANGE 2 true
+
+//////////
+# 0x0150	//CWRANGE
+
+@ 0
+
+MUSICCHANGE 0 true
+
+@ 1
+
+MUSICCHANGE 2 true
+
+/////////
+# 0x0180	//第一关对话音乐淡出
+
+@ 0
+
+@ 1
+
+MUSICSLIDE 2.5 0
+
+/////////
+# 0x0190	//RANGEMUSIC
+
+@ 0
+
+MUSICCHANGE 0 true
+
+@ 1
+
+MUSICCHANGE 3 true
+
+///////////////////////////////
+# 0x0200	//第二关道中
+
+@ 0
+
+BGOFF 0
+BGOFF 1
+BGOFF 2
+BGOFF 3
+BGOFF 4
+BGOFF 5
+BGOFF 16
+
+@ 1
+
+//覆盖层
+BGVALUE 16 1
+	220 240 440 480
+	1 1 1 1
+	0xff000000
+BGCOLOR 16
+	0xc0000000
+	0xc0000000
+	0x00000000
+	0x00000000
+BGFLAG 16 1
+
+//背景
+BGVALEX 0 69
+	440 0 0 640 480
+	0 0 9000 0
+	0.5 0 0.5 1
+	0 9000 0 0
+	0xffffffff
+//桥
+BGVALEX 5 68
+	0 480 -600 440 600
+	9000 0 0 0
+	0.3125 0 0.6875 2
+	0.012 9000 0 0
+	0xffffffff
+BGCOLOR 5 0x00ffffff 0x00ffffff 0xffffffff 0xffffffff
+//左护栏
+BGVALEX 3 68
+	0 240 -600 240 600
+	9000 0 9000 0
+	0 0 0.3125 1
+	0.006 9000 0 0
+	0xffffffff
+BGCOLOR 3 0x00ffffff 0x00ffffff 0xffffffff 0xffffffff
+
+//右护栏
+BGVALEX 4 68
+	440 240 -600 240 600
+	9000 0 9000 0
+	0 0 0.3125 1
+	0.006 9000 0 0
+	0xffffffff
+BGCOLOR 4 0x00ffffff 0x00ffffff 0xffffffff 0xffffffff
+//左瀑布
+BGVALEX 1 69
+	0 -480 -600 960 600
+	9000 0 9000 0
+	0 0 0.5 1
+	0.006 9000 0 0
+	0xffffffff
+BGCOLOR 1 0x00ffffff 0x00ffffff 0xffffffff 0xffffffff
+
+////////////////////////////
+# 0x0202	//第二关标题
+
+@ 0
+
+BGOFF 15
+
+@ 1
+//标题文字层
+IF MODE - 3
+{
+	BGVALUE 15 67
+		220 240 256 256
+		1 1 1 1
+		0x0
+	BGFLAG 15 BG_LIGHTUP
+}
+
+@ 160
+//标题文字淡出
+IF MODE - 3
+{
+	BGFLAG 15 BG_FADEOUT
+}
+
+@ 240
+//标题文字消失
+BGOFF 15
+
+//////////
+# 0x0220	//BXRANGE
+
+@ 0
+
+BGOFF 8
+
+@ 1
+
+BGVALEX 8 100
+	0 0 0 440 480
+	0 0 0 0
+	0 0 1 1
+	0.008 -9000 false false
+	0x00ffffff
+BGFLAG 8 BG_LIGHTUP
+
+@ 0xffff
+
+BGFLAG 8 BG_FADEOUT
+
+//////////
+# 0x0230	//BARANGE
+
+@ 0
+
+BGOFF 8
+
+@ 1
+
+BGVALEX 8 100
+	0 0 0 440 480
+	0 0 0 0
+	0 0 1 1
+	0.008 -9000 false false
+	0x00ffffff
+BGFLAG 8 BG_LIGHTUP
+
+@ 0xffff
+
+BGFLAG 8 BG_FADEOUT
+
+//////////
+# 0x0240	//第二关音乐开始
+
+@ 0
+
+@ 1
+
+MUSICCHANGE 2 true
+
+/////////
+# 0x0280	//第二关对话音乐淡出
+
+@ 0
+
+@ 1
+
+MUSICSLIDE 2.5 0
+
+/////////
+# 0x0290	//RANGEMUSIC
+
+@ 0
+
+MUSICCHANGE 0 true
+
+@ 1
+
+MUSICCHANGE 4 true
+
+//////////////////////////
+# 0x0300	//第三A关道中
+
+@ 0
+
+BGOFF 0
+BGOFF 1
+BGOFF 15
+BGOFF 16
+
+@ 1
+
+//覆盖层
+BGVALUE 16 1
+	220 240 440 480
+	1 1 1 1
+	0xff000000
+BGCOLOR 16
+	0xc0000000
+	0xc0000000
+	0x00000000
+	0x00000000
+
+//场景层
+BGVALEX 0 75
+	60 480 -900 330 960
+	9000 0 0 0
+	0 0 0.75 1
+	0.01 9000 0 0
+	0x00000000
+	
+BGVALEX 1 75
+	-105 194.2 -900 330 960
+	9000 0 6000 0
+	0 0.5 0.75 1
+	0.01 9000 0 0
+	0x00000000
+	
+BGVALEX 2 75
+	390 480 -900 330 960
+	9000 0 -6000 0
+	0 0.2 0.75 1
+	0.01 9000 0 0
+	0x00000000
+	
+BGVALEX 3 75
+	-105 194.2 -900 330 960
+	9000 0 -6000 0
+	0 0.8 0.75 1
+	0.01 9000 0 0
+	0x00000000
+	
+BGVALEX 4 75
+	555 194.2 -900 330 960
+	9000 0 -12000 0
+	0 0.3 0.75 1
+	0.01 9000 0 0
+	0x00000000
+	
+BGVALEX 5 75
+	60 -91.6 -900 330 960
+	9000 0 0 0
+	0 0.7 0.75 1
+	0.01 9000 0 0
+	0x00000000
+	
+@ @@[] 1 255
+
+SD [alpha] BGS@ * 0x01000000
+BGCOLOR 0 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+BGCOLOR 1 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+BGCOLOR 2 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+BGCOLOR 3 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+BGCOLOR 4 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+BGCOLOR 5 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+
+////////////////////////////
+# 0x0302	//第三A关标题
+
+@ 0
+
+BGOFF 15
+
+@ 1
+//标题文字层
+IF MODE - 3
+{
+	BGVALUE 15 74
+		220 240 256 256
+		1 1 1 1
+		0x0
+	BGFLAG 15 BG_LIGHTUP
+}
+
+@ 160
+//标题文字淡出
+IF MODE - 3
+{
+	BGFLAG 15 BG_FADEOUT
+}
+
+@ 240
+//标题文字消失
+BGOFF 15
+
+////////////////////////////
+# 0x0304	//第三A关火球
+
+@ 0
+
+EFFOFF 0
+EFFOFF 1
+
+@ @@>% 240 157
+
+EFFSETUPEX 0 60 120
+	-60 RAND % 480 -900 0xff
+	0 0.0 10.0
+
+@ @@>% 240 177
+
+EFFSETUPEX 1 60 120
+	500 RAND % 480 -900 0xff
+	0 0.0 10.0
+
+//////////
+# 0x0320	//PLRANGE
+
+@ 0
+
+BGOFF 8
+
+@ 1
+
+BGVALEX 8 100
+	0 0 0 440 480
+	0 0 0 0
+	0 0 1 1
+	0.008 -9000 false false
+	0x00ffffff
+BGFLAG 8 BG_LIGHTUP
+
+@ 0xffff
+
+BGFLAG 8 BG_FADEOUT
+
+//////////
+# 0x0340	//第三A关音乐开始
+
+@ 0
+
+@ 1
+
+MUSICCHANGE 2 true
+
+/////////
+# 0x0380	//第三A关对话音乐淡出
+
+@ 0
+
+@ 1
+
+MUSICSLIDE 2.5 0
+
+/////////
+# 0x0390	//RANGEMUSIC
+
+@ 0
+
+MUSICCHANGE 0 true
+
+@ 1
+
+MUSICCHANGE 5 true
+
+//////////////////////////
+# 0x0400	//第四A关道中
+
+@ 0
+
+BGOFF 0
+BGOFF 1
+BGOFF 15
+BGOFF 16
+
+@ 1
+
+//覆盖层
+BGVALUE 16 1
+	220 240 440 480
+	1 1 1 1
+	0xff000000
+BGCOLOR 16
+	0xc0000000
+	0xc0000000
+	0x00000000
+	0x00000000
+
+//场景层
+BGVALEX 0 82
+	60 480 -900 330 960
+	9000 0 0 0
+	0 0 1 2
+	0.02 9000 0 0
+	0x00000000
+	
+BGVALEX 1 82
+	-105 194.2 -900 330 960
+	9000 0 6000 0
+	0 0 1 2
+	0.02 9000 0 0
+	0x00000000
+	
+BGVALEX 2 82
+	390 480 -900 330 960
+	9000 0 -6000 0
+	0 0 1 2
+	0.02 9000 0 0
+	0x00000000
+	
+BGVALEX 3 82
+	-105 194.2 -900 330 960
+	9000 0 -6000 0
+	0 0 1 2
+	0.02 9000 0 0
+	0x00000000
+	
+BGVALEX 4 82
+	555 194.2 -900 330 960
+	9000 0 -12000 0
+	0 0 1 2
+	0.02 9000 0 0
+	0x00000000
+	
+BGVALEX 5 82
+	60 -91.6 -900 330 960
+	9000 0 0 0
+	0 0 1 2
+	0.02 9000 0 0
+	0x00000000
+	
+@ @@[] 1 255
+
+SD [alpha] BGS@ * 0x01000000
+BGCOLOR 0 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+BGCOLOR 1 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+BGCOLOR 2 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+BGCOLOR 3 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+BGCOLOR 4 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+BGCOLOR 5 0x00ffffff 0x00ffffff alpha +  0x00ffffff alpha + 0x00ffffff
+
+////////////////////////////
+# 0x0402	//第三B关标题
+
+@ 0
+
+BGOFF 15
+
+@ 1
+//标题文字层
+IF MODE - 3
+{
+	BGVALUE 15 81
+		220 240 256 256
+		1 1 1 1
+		0x0
+	BGFLAG 15 BG_LIGHTUP
+}
+
+@ 160
+//标题文字淡出
+IF MODE - 3
+{
+	BGFLAG 15 BG_FADEOUT
+}
+
+@ 240
+//标题文字消失
+BGOFF 15
+
+//////////
+# 0x0420	//CFRANGE
+
+@ 0
+
+BGOFF 8
+
+@ 1
+
+BGVALEX 8 100
+	0 0 0 440 480
+	0 0 0 0
+	0 0 1 1
+	0.008 -9000 false false
+	0x00ffffff
+BGFLAG 8 BG_LIGHTUP
+
+@ 0xffff
+
+BGFLAG 8 BG_FADEOUT
+
+//////////
+# 0x0440	//第三B关音乐开始
+
+@ 0
+
+@ 1
+
+MUSICCHANGE 2 true
+
+/////////
+# 0x0480	//第三B关对话音乐淡出
+
+@ 0
+
+@ 1
+
+MUSICSLIDE 2.5 0
+
+/////////
+# 0x0490	//RANGEMUSIC
+
+@ 0
+
+MUSICCHANGE 0 true
+
+@ 1
+
+MUSICCHANGE 5 true

@@ -1,0 +1,274 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+STAGEFILE
+////////////////////
+# 302	//演示
+
+@ 1
+
+MUSICCHANGE 0 true
+
+IF MODE !
+{
+	SETSCENE 402
+}
+
+@ @@> 1
+
+EXECUTE CT_STAGE 300 TIME
+
+IF TIME ! * GETSCENE - 304 !
+{
+	SETSCENE 306
+}
+
+/////////////////////
+# 306	//道中1
+
+@ 1
+
+BGSETUP 1 0x0302 true
+//背景火球
+BGSETUP 2 0x0304 true
+BGSETUP 4 0x0340 true
+
+@ 240
+
+BGSETUP 1 0 true
+
+//火球射击
+@ @@[ 180
+
+CALL $ST3AFireShoot TIME
+
+//拉线
+@ @@[]% 400 1600 400
+
+EB 0x2300 0xff
+	TIME % 800 < 400 * 100 + 170 0 9000 2.0
+	1 15 300 0x00000152
+
+//拦截
+@ @@[]% 400 2000 120
+
+SD [randX] RAND % 200 - 100
+EB 0x2302 0xff
+	TIME % 800 < 400 ! * 200 + 120 0 9000 5.0
+	0 5 80 0x00000042
+
+//主攻
+@ 2000
+
+EB 0x2304 0xff
+	220 0 9000 2.5
+	3 20 360 0x000000A5
+
+//排列
+@ @@[]% 2600 2780 20
+
+EXECUTE CT_STAGE 304 TIME
+
+@ 3060
+
+SETTIME 0
+SETSCENE 310
+
+//////////////
+# 310	//白血1
+
+@ 1
+
+EB 0x2380 40
+	0 0 3500 5.0
+	40 180 300 0x00000000
+
+BOSSUP
+
+/////////////
+# 314	//对话1
+
+@ @@> 0
+
+EXECUTE CT_STAGE 312 TIME
+
+IF CHATI - 0xff !
+{
+	SETSCENE 318
+}
+
+///////////////
+# 318	//PLRANGEOhMyGod
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0320 0xffff
+
+@ 1
+
+BGSETUP 0 0x0300 false
+BGSETUP 2 0x0304 false
+BGSETUP 4 0x0340 false
+BGSETUP 8 0x0320 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x2382 40
+	TX 40 TY 40 0 5.0
+	40 200 240 0x00100094
+
+BOSSUP
+
+///////////////
+# 322	//道中2
+
+@ 1
+
+EB 0x0000 40
+	TX 40 TY 40 -4500 5.0
+	40 200 240 0x00000000
+
+@ @@[ 180
+
+CALL $ST3AFireShoot TIME
+
+//拉圈
+@ @@<% 1400 144
+
+SD [bRight] TIME / 144 % 2
+EB 0x2308 0xff
+	bRight * 440 120 bRight * 18000 4.0
+	1 5 90 0x00000062
+
+//火雨
+@ 480
+
+EB 0x2310 0xff
+	220 0 9000 1.5
+	3 15 700 0x000011A4
+
+@ 1500
+
+SETTIME 0
+SETSCENE 326
+
+///////////////
+# 326	//对话2
+
+@ @@> 0
+
+EXECUTE CT_STAGE 324 TIME
+
+IF CHATI - 0xff !
+{
+	SETSCENE 330
+}
+
+////////////////
+# 330	//白血2
+
+@ 1
+
+BGSETUP 4 0x0390 true
+
+EB 0x2384 40
+	TX 40 TY 40 9000 5.0
+	40 160 300 0x00000000
+
+BOSSUP
+
+///////////////
+# 334	//PLRANGE火刑者的挽联
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0320 0xffff
+
+@ 1
+
+BGSETUP 0 0x0300 false
+BGSETUP 2 0x0304 false
+BGSETUP 4 0x0390 false
+BGSETUP 8 0x0320 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x2386 40
+	TX 40 TY 40 0 5.0
+	40 200 240 0x00000193
+
+BOSSUP
+
+/////////////
+# 338	//白血3
+
+@ 1
+
+EB 0x2388 40
+	TX 40 TY 40 9000 5.0
+	40 160 300 0x00000000
+
+BOSSUP
+
+////////////
+# 342	//PLRANGE京城礼花祭
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0320 0xffff
+
+@ 1
+
+BGSETUP 0 0x0300 false
+BGSETUP 2 0x0304 false
+BGSETUP 4 0x0390 false
+BGSETUP 8 0x0320 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x2390 40
+	TX 40 TY 40 0 5.0
+	40 220 240 0x00000193
+
+BOSSUP
+
+////////////
+# 346	//PLRANGE魔窟炼狱
+
+@ 0
+
+BGSETUP 8 0 true
+
+@ 0xffff
+
+EXECUTE CT_SCENE 0x0320 0xffff
+
+@ 1
+
+BGSETUP 0 0x0300 false
+BGSETUP 2 0x0304 false
+BGSETUP 4 0x0390 false
+BGSETUP 8 0x0320 true
+ENTEXASSIGN	24 24 24 24
+
+RANGEUP 40 220 120
+
+EB 0x2392 40
+	TX 40 TY 40 0 5.0
+	40 220 240 0x00000000
+
+BOSSUP

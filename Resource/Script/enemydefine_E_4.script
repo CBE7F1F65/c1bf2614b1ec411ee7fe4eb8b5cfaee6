@@ -1,0 +1,388 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+EDEFFILE
+
+//////////
+# 0x0400	//À­ÏßÐ¡±ø
+
+@ 1
+
+EA 5 7
+	90 995 360 9000
+
+@ @@[]% 90 360 90
+
+GB 0x8402 0xff 0xff
+	ENX ENY ENAMAP 0 3.5
+	0 10 200
+
+/////////
+# 0x0402	//À¹½ØÐ¡±ø
+
+@ 1
+
+EA 4 4
+	120 984 -9000
+
+@ @@[]% 30 45 15
+
+SD [bRight] ENAIMX
+A 13
+	TIMERLESS 30 SPEEDSETADD -10
+	TIMEREQUAL 30 ANGLESETADD SIGN bRight * 13500
+	TIMERRANGE 30 60 SPEEDSETADD 3
+BC 18 false
+	ENX ENY 3.5
+	12 2 8 0
+A 0
+
+//////////
+# 0x0404	//Ö÷¹¥Ð¡±ø
+
+@ 1
+
+EA 5 7
+	90 985 420 9000
+
+@ 60
+
+SD [i] 4
+LOOP [i]
+{
+	GB 0x8404 0xff ENI
+		ENX ENY i * 9000 SIGN i *f 5.5
+		0 20 100
+}
+
+@ @@[]%] 90 360 60 12
+
+A 4
+	TIMEREQUAL 24 ANGLESETAMAP 0
+B ENX ENY
+	true EN@ * 3000 4.0
+	32 0 16 0 0xff
+A 0
+
+//////////////
+# 0x0408	//À­È¦Ð¡±ø
+
+@ 100
+
+EA 4 4
+	240 994 9000
+
+@ @@]% 100 15
+
+BEB ENX 0
+	9000 1.5 0 ENAIMX + 1
+	600 true true 90 0xff
+
+///////////////
+# 0x0410	//»ðÓêÐ¡±ø
+
+@ @@[< 120 960
+
+EA 4 42
+	30 PX 120
+
+@ 960
+
+EA 4 42
+	120 220 -400
+
+@ 60
+
+SD [i] 4
+LOOP [i]
+{
+	GB 0x8410 0xff ENI
+		ENX ENY i * 4000 - SEED 3.5
+		0 20 40
+}
+
+////////////BOSS////////////
+
+////////
+# 0x0480	//°×Ñª1
+
+@ 1
+
+EA 4 42
+	60 220 120
+
+@ @@]% 120 30
+
+GB 0x8406 0xff ENI
+	ENX ENY SEED 2.0
+	0 15 60
+
+@ @@% 91
+
+SD [randAngle] RANDA
+SD [i] 72
+SD [type] RAND % 2 + 8
+SD [color] RAND % 6
+LOOP [i]
+{
+	SD [stopTime] ROLL i 3 * 5 + 30
+	A 12
+		TIMEREQUAL stopTime SPEEDSET 0
+		TIMEREQUAL 120 SPEEDSET 250
+		TIMEREQUAL 120 ANGLESETADD 18000
+	B ENX ENY
+		true i * 500 + randAngle 2.5
+		type color 16 0 0xff
+}
+A 0
+
+//////////
+# 0x0482	//CFRANGEÒ»Ç§ÁãÒ»Ò¹
+
+@ 1
+
+EA 5 41
+	120 220 120 120
+	
+@ @@% 360
+
+BOSSSTORE
+
+@ @@[]% 64 112 16
+
+GB 0x8408 0xff ENI
+	ENX ENY 9000 -3.0
+	0 40 80
+
+@ @@% 160
+
+BC 30 false
+	ENX ENY 1.5
+	8 7 8 0
+	
+//////////
+# 0x0484	//°×Ñª2
+
+@ 1
+
+EA 5 41
+	60 220 120 60
+
+
+@ @@[]% 80 94 2
+
+SD [angle] EN@ - 80 / 2 * 4500
+SDf [cosA] COSA angle
+SDf [sinA] SINA angle
+GB 0x8412 0xff ENI
+	60 *f cosA +f ENX 60 *f sinA +f ENY angle 0.0
+	0 30 60
+
+////////////
+# 0x0486	//CFRANGEË®¾§¹×
+
+@ 1
+
+EA 4 42
+	60 220 160
+
+@ 60
+
+GB 0x8000 0xff ENI
+	ENX ENY + 30 -9000 0.0
+	0 2 90
+
+@ @@%= 480 60
+
+SD [_0] 0
+SD [diffiShift] DIFFI * 0x1000
+GB 0x8414 + diffiShift _0 0xff
+	220 -240 9000 1.25
+	0 4096 360
+GB 0x8414 + diffiShift _0 + 1 0xff
+	-260 180 0 1.6
+	0 4096 360
+GB 0x8414 + diffiShift _0 + 4 0xff
+	700 180 18000 1.6
+	0 4096 360
+GB 0x8414 + diffiShift _0 + 2 0xff
+	170 480 -9000 0.5
+	0 4096 360
+GB 0x8414 + diffiShift _0 + 3 0xff
+	270 480 -9000 0.5
+	0 4096 360
+
+@ @@%= 480 180
+
+BOSSSTORE
+
+@ @@%= 240 60
+
+SD [i] 5
+SD [holdTimer] EN@ % 480 < 300 * 120 + 120
+LOOP [i]
+{
+	BEB 220 240
+		9000 0.5 13 2
+		0 true true holdTimer 0xff
+	BEPIN BEI
+		_0 + i D 1 + 1 % 5
+}
+
+@ @@%= 480 320
+
+BEB ENX - 40 ENY
+	0 8.0 13 6
+	80 true true 30 0xff
+
+@ @@%= 480 330
+
+BEB ENX ENY - 40
+	9000 8.0 13 6
+	120 true true 30 0xff
+
+@ @@%[] 480 360 420
+
+SDf [tPX] PX
+IF tPX >f 220.0
+{
+	SDf [tPX] 440.0 -f tPX
+}
+
+SD [func1] tPX *f -1.25 +f 335.0 >f PY !
+SD [func2] tPX *f 3.913043 -f 305.2174 <f PY !
+SD [func3] PY >f 360.0 !
+IF PBINFI ! * func1 * func2 * func3
+{
+	COLLAPSE
+}
+
+///////////////
+# 0x0488	//°×Ñª3
+
+@ 1
+
+EA 5 41
+	60 220 120 60
+
+@ @@[]% 80 94 2
+
+GB 0x8412 0xff ENI
+	ENX ENY EN@ - 80 / 2 * 4500 10.0
+	0 30 60
+
+///////////////
+# 0x0490	//CFRANGEÆßÀâ»ÃÕó
+
+@ 1
+
+EA 4 42
+	60 220 120
+
+@ 90
+
+SD [_0] 0
+SD [i] 4
+SD [diffiShift] DIFFI * 0x1000
+LOOP [i]
+{
+	GB i % 3 ! * 2 + 0x8416 + diffiShift _0 + 5 - i 0xff
+		i * 120 + 40 30 9000 0.0
+		0 4096 4096
+}
+SD [i] 2
+LOOP [i]
+{
+	GB 0x8416 + diffiShift _0 + 1 - i 0xff
+		400 i * 280 + 170 9000 0.0
+		0 4096 4096
+}
+SD [i] 2
+LOOP [i]
+{
+	GB 0x8416 + diffiShift _0 + i + 6 0xff
+		40 i * 280 + 170 9000 0.0
+		0 4096 4096
+}
+
+SD [i] 7
+LOOP [i]
+{
+	BEB 220 120
+		9000 1.0 13 0
+		0 true true 4096 0xff
+	BEPIN BEI
+		_0 + i D 1 + 1
+}
+BEB 220 120
+	9000 1.0 13 0
+	0 true true 4096 0xff
+BEPIN BEI
+	_0 + 2 _0 + 5
+
+@ @@[<% 240 480 120
+
+EXECUTE CT_EDEF 0x0490 4096
+
+@ 390
+
+BOSSSTORE
+
+@ @@[<% 540 1140 60
+
+EXECUTE CT_EDEF 0x0490 4096
+
+@ 1050
+
+BOSSSTORE
+
+@ @@[% 1200 30
+
+EXECUTE CT_EDEF 0x0490 4096
+
+@ @@% 10
+
+IF PY < 170
+{
+	B ENX ENY
+		false 0 4.0
+		5 0 8 0 0xff
+}
+
+@ 4096
+
+A 4
+	EVERY CALLSCRIPT $ENX490Bullet DIFFI
+BC 12 true
+	ENX ENY 1.5
+	5 7 8 0
+A 0
+
+//////////////
+# 0x0492	//CFRANGE°Ù»¨çÔÂÒ
+
+@ 1
+
+EA 5 41
+	60 220 160 60
+
+@ 120
+
+SD [i] 4
+LOOP [i]
+{
+	GB 0x8420 0xff 0xff
+		SIGN i * 60 +f ENX i / 2 * -60 +f ENY 9000 0.0
+		0 40 4096
+	GHSAIM i 0
+}
+
+@ @@%= 360 89
+
+ST 0 PX PY
+ST 1 ENX +f PY /f 2.0 ENY +f PY /f 2.0
+ST 2 ENX - 60 ENY
+ST 3 ENX + 60 ENY
+
+BC 24 false
+	ENX ENY 1.5
+	8 7 8 0

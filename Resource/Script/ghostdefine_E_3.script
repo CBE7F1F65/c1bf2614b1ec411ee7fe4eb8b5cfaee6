@@ -1,0 +1,345 @@
+DES_GOBSTG_SCRIPTFILE 96
+
+EDEFFILE
+
+//////////
+# 0x8300	//陷阱使魔0
+
+@ @@[]% 30 45 3
+
+A 4
+	TIMERLESS 60 SPEEDSETADD -2
+BC 12 false
+	GHX GHY 2.0
+	8 1 8 8
+A 0
+
+@ 45
+
+RAMA false
+	GHX GHY PX PY 0 [angle]
+GHSET 1.5 angle GHAC
+
+//////////
+# 0x8301	//陷阱使魔1
+
+@ @@[]% 20 45 3
+
+A 4
+	TIMERLESS 60 SPEEDSETADD -3
+BC 15 false
+	GHX GHY 3.0
+	8 0 8 8
+A 0
+
+@ 45
+
+RAMA false
+	GHX GHY PX PY 0 [angle]
+GHSET 1.5 angle GHAC
+
+/////////
+# 0x8302	//拉线使魔0
+
+@ @@[]% 15 25 2
+
+B GHX GHY
+	false 0 GH@ - 10 /f 10.0 +f 1.0
+	3 1 8 8 0xff
+
+///////////
+# 0x8303	//拉线使魔1
+
+@ @@[]% 15 25 2
+
+B GHX GHY
+	false 0 GH@ - 10 /f 10.0 +f 1.5
+	3 0 8 8 0xff
+
+//////////
+# 0x8304	//主攻使魔0
+
+@ @@[]%]% 90 300 90 12 3
+
+A 9
+	TIMEREQUAL 60 SPEEDSET 500
+	TIMERRANGE 60 120 SPEEDSETADD -5
+B GHX GHY
+	true GHANGLE + 16500 0.0
+	40 0 16 0 0xff
+A 0
+
+@ @@[]%] 90 300 45 4
+
+B GHX GHY
+	true GHANGLE + 18000 4.0
+	37 2 16 8 0xff
+
+///////////
+# 0x8305	//主攻使魔1
+
+@ @@[] 90 300
+
+A 5
+	TIMERGREAT 0 YSETACCADD 0 -4
+B GHX GHY
+	true RAND % 4000 + 7000 3.0
+	37 0 8 8 0xff
+A 0
+
+@ @@[]% 90 300 25
+
+BC 8 false
+	GHX GHY 2.5
+	40 0 16 0
+
+////////////
+# 0x8306	//白血1使魔0
+
+@ @@>% 60 90
+
+B GHX GHY
+	true GHANGLE + 18000 2.0
+	32 1 16 8 0xff
+
+////////////
+# 0x8307	//白血1使魔1
+
+@ @@>% 60 60
+
+B GHX GHY
+	true GHANGLE + 18000 1.0
+	32 2 16 8 0xff
+
+////////////
+# 0x8308	//PLRANGEOhMyGod使魔0
+
+@ @@>%]% 60 120 60 4
+
+A 12
+	TIMERLESS 60 SPEEDSETADD -7
+	TIMEREQUAL 90 COLORSET 2
+	TIMEREQUAL 90 ANGLESETADD 18000
+SD [i] 2
+SD [rand] GH@ * 100 + SEED % 9000 + 13500
+LOOP [i]
+{
+	B GHX GHY
+		true i * rand + GHANGLE 5.0
+		9 0 8 8 0xff
+}
+A 0
+
+////////////
+# 0x8309	//PLRANGEOhMyGod使魔1
+
+@ @@>%]% 60 120 60 2
+
+SD [tarID] GH@ / 2 % 4
+A 9
+	TIMERLESS 120 CHASE tarID 150
+	TIMEREQUAL 120 COLORSET 2
+B GHX GHY
+	true 0 3.0
+	9 0 8 8 0xff
+A 0
+
+////////////
+# 0x8310	//火雨小兵使魔0
+
+@ @@[]%<% 60 900 80 65 18
+
+A 4
+	TIMERLESS 75 SPEEDSETADD 2
+B GHX GHY
+	true RAND % 1500 + 8250 1.0
+	13 2 8 8 0xff
+A 0
+
+////////////
+# 0x8311	//火雨小兵使魔1
+
+@ @@[]%<% 60 900 80 65 14
+
+A 4
+	TIMERLESS 80 SPEEDSETADD 2
+B GHX GHY
+	true RAND % 2000 + 8000 1.0
+	13 2 8 8 0xff
+A 0
+
+////////////
+# 0x8312	//白血2使魔0
+
+@ @@[% 60 60
+
+SD [angleOff] GHSPEED ! ! * GHANGLE
+SD [i] 8
+LOOP [i]
+{
+	B GHX GHY
+		true i * 4500 + angleOff 2.0
+		8 1 8 0 0xff
+}
+
+////////////
+# 0x8313	//白血2使魔1
+
+@ @@[% 60 45
+
+SD [angleOff] GHSPEED ! ! * GHANGLE
+SD [i] 12
+LOOP [i]
+{
+	B GHX GHY
+		true i * 3000 + angleOff 1.5
+		8 i % 2 8 0 0xff
+}
+
+////////////
+# 0x8314	//PLRANGE火刑者的挽联使魔0
+
+@ @@%]% 60 40 6
+
+A 6
+	TIMERRANGE 30 120 CHASE _0 150
+B GHX GHY
+	true GHX > 220 * 18000 0.0
+	0 2 8 16 0xff
+A 0
+
+////////////
+# 0x8315	//PLRANGE火刑者的挽联使魔1
+
+@ @@%]% 60 40 4
+
+A 6
+	TIMERRANGE 30 120 CHASE _0 150
+B GHX GHY
+	true GHX > 220 * 18000 0.0
+	35 0 8 16 0xff
+A 0
+
+///////////
+# 0x8316	//PLRANGE火刑者的挽联干扰使魔0
+
+@ @@% 25
+
+IF PY < 160
+{
+	A 6
+		EVERY YSETADD -30
+		TIMEREQUAL 150 FADEOUT
+	BC 75 true
+		GHX GHY 1.5
+		10 0 8 0
+	A 0
+}
+
+///////////
+# 0x8317	//PLRANGE火刑者的挽联干扰使魔1
+
+@ @@% 25
+
+EXECUTE CT_EDEF 0x8316 GH@
+
+///////////
+# 0x8318	//PLRANGE京城礼花祭使魔0
+
+@ 60
+
+SD [randCol] RAND % 8
+A 12
+	TIMERLESS 120 SPEEDSETADD -4
+	TIMEREQUAL 120 CALLSCRIPT $GHX318Bullet randCol
+	TIMEREQUAL 120 FADEOUT
+B GHX GHY
+	true RAND % 1000 - 9500 5.0
+	40 randCol 8 0 0xff
+A 0
+
+///////////
+# 0x8319	//PLRANGE京城礼花祭使魔1
+
+@ 60
+
+SD [randCol] RAND % 8
+A 12
+	TIMERLESS 120 SPEEDSETADD -4
+	TIMEREQUAL 120 CALLSCRIPT $GHX318Bullet randCol + 16
+	TIMEREQUAL 120 FADEOUT
+B GHX GHY
+	true RAND % 1000 - 9500 5.0
+	40 randCol 8 0 0xff
+A 0
+
+///////////
+# 0x8320	//PLRANGE魔窟炼狱使魔0
+
+@ @@> 0
+
+SD [signVal] GH@ / 120
+GHSET SIGN signVal *f 3.0 GHANGLE ROLL GH@ 60
+
+@ @@%>%< 120 60 3 2
+
+SD [signNum] GH@ / 120
+SD [timeBase] GH@ % 15 + 30
+SD [timeAdv] timeBase + 30
+A 21
+	TIMERLESS timeBase SPEEDSETADD 4
+	TIMEREQUAL timeBase SPEEDSET 1
+	TIMEREQUAL timeAdv ANGLESETADD SIGN signNum * -3000
+	TIMEREQUAL timeAdv TYPESET 0
+	TIMERRANGE timeAdv timeAdv + 30 SPEEDSETADD 6
+B GHX GHY
+	true GHANGLE + 9000 0.1
+	9 6 8 0 0xff
+A 0
+
+///////////
+# 0x8321	//PLRANGE魔窟炼狱使魔1
+
+@ @@> 0
+
+SD [signVal] GH@ / 120
+GHSET SIGN signVal *f 3.0 GHANGLE ROLL GH@ 60
+
+@ @@%>%< 120 60 4 3
+
+SD [signNum] GH@ / 120
+SD [timeBase] GH@ % 15 + 30
+SD [timeAdv] timeBase + 30
+A 21
+	TIMERLESS timeBase SPEEDSETADD 4
+	TIMEREQUAL timeBase SPEEDSET 1
+	TIMEREQUAL timeAdv ANGLESETADD SIGN signNum * -3000
+	TIMEREQUAL timeAdv TYPESET 33
+	TIMERRANGE timeAdv timeAdv + 30 SPEEDSETADD 6
+B GHX GHY
+	true GHANGLE + 9000 0.1
+	37 0 8 0 0xff
+A 0
+
+///////////
+# 0x8322	//PLRANGE魔窟炼狱干扰使魔0
+
+@ @@% 180
+
+SD [angleBase] GHAMAP -1500
+SD [i] 3
+LOOP [i]
+{
+	B GHX GHY
+		true i * 1500 + angleBase 1.8
+		32 1 8 0 0xff
+}
+
+///////////
+# 0x8323	//PLRANGE魔窟炼狱干扰使魔1
+
+@ @@% 120
+
+BC 36 false
+	GHX GHY 2.0
+	32 0 8 0
