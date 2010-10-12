@@ -205,7 +205,7 @@
 				RelativePath=".\EditorUI.cpp">
 			</File>
 			<File
-				RelativePath="E:\hge\DES_GOBSTG\DES_GOBSTG\Core\Export.cpp">
+				RelativePath="..\Des_gobstg\Des_gobstg\Core\Export.cpp">
 			</File>
 			<File
 				RelativePath=".\hgeParticleEditor.cpp">
